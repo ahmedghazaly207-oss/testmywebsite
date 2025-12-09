@@ -1,0 +1,82 @@
+.aboutPage {
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(135deg, #001a4d 0%, #002966 100%);
+  padding: 3rem 1rem;
+}
+
+.aboutContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 15px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0, 26, 77, 0.15);
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #001a4d;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+}
+
+.text {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  white-space: pre-wrap;
+}
+
+.featuresList {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.featureItem {
+  font-size: 1.05rem;
+  color: #333;
+  margin-bottom: 1rem;
+  padding-left: 0;
+}
+
+.featureItem::before {
+  content: '';
+  display: inline-block;
+  margin-right: 0.8rem;
+}
+
+.tagline {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #DA2FFF;
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .aboutContainer {
+    padding: 2rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .text {
+    font-size: 1rem;
+  }
+
+  .tagline {
+    font-size: 1.1rem;
+  }
+}

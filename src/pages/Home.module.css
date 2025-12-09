@@ -1,0 +1,140 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Section */
+.heroSection {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, rgba(65, 105, 225, 0.08), rgba(65, 105, 225, 0.03));
+  border-radius: 24px;
+  border: 1px solid rgba(65, 105, 225, 0.12);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 20px 60px rgba(65, 105, 225, 0.1);
+}
+
+.heroContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #DA2FFF 0%, #B800FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -1px;
+}
+
+.heroSubtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.adminLink {
+  display: none;
+}
+
+/* Matches Section */
+.matchesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.matchesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  animation: fadeIn 0.8s ease-out;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.noMatches {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: rgba(17, 17, 17, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(65, 105, 225, 0.1);
+}
+
+.noMatches p {
+  font-size: 1.1rem;
+  color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 2rem 1rem;
+  }
+
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home {
+    gap: 2rem;
+  }
+
+  .heroSection {
+    padding: 1.5rem 1rem;
+  }
+
+  .heroTitle {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .heroSubtitle {
+    font-size: 0.95rem;
+  }
+
+  .matchesGrid {
+    gap: 1rem;
+    max-width: 100%;
+  }
+
+  .noMatches {
+    padding: 2rem 1rem;
+  }
+
+  .noMatches p {
+    font-size: 1rem;
+  }
+}
+
