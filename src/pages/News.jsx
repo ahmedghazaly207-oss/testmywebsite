@@ -57,7 +57,7 @@ function News() {
   if (id && news) {
     const seoTitle = `${getTranslation(news.title)} | BeinMatchLive`
     const seoDescription = getTranslation(news.subtitle)
-    const seoUrl = `https://beinmatchlive.com/news/${id}`
+    const seoUrl = `https://kooramatchlive.com/news/${id}`
     const seoKeywords = `${getTranslation(news.title)}, ${getTranslation(news.category)}, ${getKeywords()}`
 
     return (
@@ -84,14 +84,14 @@ function News() {
             'author': {
               '@type': 'Organization',
               'name': 'BeinMatchLive',
-              'url': 'https://beinmatchlive.com'
+              'url': 'https://kooramatchlive.com'
             },
             'publisher': {
               '@type': 'Organization',
               'name': 'BeinMatchLive',
               'logo': {
                 '@type': 'ImageObject',
-                'url': 'https://beinmatchlive.com/logo.png'
+                'url': 'https://kooramatchlive.com/logo.png'
               }
             }
           })}
@@ -145,7 +145,7 @@ function News() {
   // Liste toutes les actualités
   const newsListTitle = language === 'ar' ? 'أخبار وأحداث كرة القدم | BeinMatchLive' : language === 'fr' ? 'Actualités et Événements | BeinMatchLive' : 'Football News & Events | BeinMatchLive'
   const newsListDescription = language === 'ar' ? 'أحدث أخبار وأحداث كرة القدم على BeinMatchLive - متابعة يومية لأهم الأحداث الرياضية' : language === 'fr' ? 'Les dernières actualités et événements du football sur BeinMatchLive - Suivez les actualités sportives quotidiennes' : 'Latest football news and events on BeinMatchLive - Daily sports updates and coverage'
-  const newsListUrl = 'https://beinmatchlive.com/news'
+  const newsListUrl = 'https://kooramatchlive.com/news'
 
   return (
     <div className={styles.newsPage}>

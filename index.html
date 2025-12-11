@@ -1,17 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta Tags Essentiels -->
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- SEO Meta Tags -->
+    <title>BeinMatchLive - البث المباشر لمباريات كرة القدم | Live Football Matches</title>
+    <meta name="description" content="KooraMatchLive - أفضل موقع متابعة مباريات كرة القدم بث مباشر. شاهد جميع المباريات الحية والأحداث الرياضية على kooramatchlive.com" />
+    <meta name="keywords" content="كرة القدم, مباريات مباشرة, أخبار كرة القدم, بث مباشر, يورو 2024, كأس العالم, الدوري, أحداث رياضية" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="ar,fr,en" />
+    <meta name="author" content="BeinMatchLive" />
+    
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BeinMatchLive - مباريات كرة القدم المباشرة" />
+    <meta property="og:description" content="منصة بث مباشر شاملة لمباريات كرة القدم والأحداث الرياضية العالمية" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&h=630&fit=crop" />
+    <meta property="og:url" content="https://kooramatchlive.com" />
+    <meta property="og:site_name" content="KooraMatchLive" />
+    <meta property="og:locale" content="ar_SA" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BeinMatchLive - مباريات كرة القدم بث مباشر" />
+    <meta name="twitter:description" content="تابع أفضل مباريات كرة القدم مع التحديثات الفورية والأخبار الرياضية" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&h=630&fit=crop" />
+    
+    <!-- Hreflang pour multilingue -->
+    <link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/?lang=ar" />
+    <link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/?lang=fr" />
+    <link rel="alternate" hreflang="en" href="https://kooramatchlive.com/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://kooramatchlive.com" />
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://kooramatchlive.com/" />
+    
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="https://kooramatchlive.com/sitemap.xml" />
+    
+    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BeinMatchLive - Live Football Matches</title>
-    <meta
-      name="description"
-      content="BeinMatchLive - Your premier destination for live football matches and sports updates. Watch all matches on beinmatchlive.com"
-    />
+    <link rel="apple-touch-icon" href="/vite.svg" />
+    
+    <!-- Google Verification (remplacer par votre token) -->
+    <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" />
+    
+    <!-- Preconnect pour les ressources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="./src/main.jsx"></script>
+    
+    <!-- JSON-LD Organization Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "KooraMatchLive",
+      "url": "https://kooramatchlive.com",
+      "logo": "https://kooramatchlive.com/logo.png",
+      "description": "منصة بث مباشر شاملة لمباريات كرة القدم والأحداث الرياضية",
+      "sameAs": [
+        "https://www.facebook.com/beinmatchlive",
+        "https://twitter.com/beinmatchlive",
+        "https://www.instagram.com/beinmatchlive"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "kooralive94@gmail.com",
+        "contactType": "Customer Service"
+      }
+    }
+    </script>
+    
+    <!-- Google Analytics (إضافة votre ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'YOUR_GA_ID', {
+        'language': 'ar'
+      });
+    </script>
+  </body>
+</html>
   </body>
 </html>

@@ -1,0 +1,25 @@
+# Allow all robots
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kooramatchlive.com/sitemap.xml
+
+# Directives spécifiques
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+# Bloquer les bots malveillants
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
