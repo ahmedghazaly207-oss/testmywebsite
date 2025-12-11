@@ -1,6 +1,6 @@
 <?php
 // ============================================
-// KooraLive Contact Form - Backend Script
+// KooraMatchLive Contact Form - Backend Script
 // ============================================
 
 // Headers pour JSON
@@ -127,10 +127,10 @@ if ($saved === false) {
 // ============================================
 
 try {
-    $senderName = 'KooraLive Contact Form';
-    $senderEmail = 'noreply@kooralive.com';
+    $senderName = 'KooraMatchLive Contact Form';
+    $senderEmail = 'noreply@kooramatchlive.com';
 
-    $subject = "🎯 Nouveau message de contact - KooraLive [{$requestType}]";
+    $subject = "🎯 Nouveau message de contact - KooraMatchLive [{$requestType}]";
 
     $htmlBody = <<<HTML
 <!DOCTYPE html>
@@ -206,7 +206,7 @@ try {
 <body>
     <div class="container">
         <div class="header">
-            <h2>⚽ Nouveau Message de Contact KooraLive <span class="badge">{$requestType}</span></h2>
+            <h2>⚽ Nouveau Message de Contact KooraMatchLive <span class="badge">{$requestType}</span></h2>
         </div>
 
         <div class="info-row">
@@ -233,7 +233,7 @@ try {
         <div class="message-body">{$message}</div>
 
         <div class="footer">
-            <p>✅ Message reçu automatiquement via le formulaire de contact KooraLive</p>
+            <p>✅ Message reçu automatiquement via le formulaire de contact KooraMatchLive</p>
             <p>Pour répondre à ce message, utilisez l'adresse email: <strong>{$email}</strong></p>
         </div>
     </div>
@@ -255,7 +255,7 @@ HTML;
     @mail($recipientEmail, $subject, $htmlBody, $headersString);
 
     // Envoyer aussi un email de confirmation à l'utilisateur
-    $userSubject = "✅ Votre message a été reçu | KooraLive";
+    $userSubject = "✅ Votre message a été reçu | KooraMatchLive";
     $userHtmlBody = <<<HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -326,12 +326,12 @@ HTML;
             <li>✓ Vous recevrez une réponse dans les 24-48 heures</li>
         </ul>
 
-        <p>Merci de votre intérêt pour <strong>KooraLive</strong> - votre plateforme de streaming sportif de confiance! 🎯⚽</p>
+        <p>Merci de votre intérêt pour <strong>KooraMatchLive</strong> - votre plateforme de streaming sportif de confiance! 🎯⚽</p>
 
-        <p>Cordialement,<br/><strong>L'équipe KooraLive</strong></p>
+        <p>Cordialement,<br/><strong>L'équipe KooraMatchLive</strong></p>
 
         <div class="footer">
-            <p>© 2024 KooraLive - Streaming Sportif. Tous droits réservés.</p>
+            <p>© 2024 KooraMatchLive - Streaming Sportif. Tous droits réservés.</p>
         </div>
     </div>
 </body>
@@ -366,4 +366,3 @@ echo json_encode([
 
 exit();
 ?>
-
