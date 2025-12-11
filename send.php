@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Configuration
 // ============================================
 
-$recipientEmail = 'matchlivetv@kooralive.com';
+$recipientEmail = 'kooralive94@gmail.com';
 $dataDir = __DIR__ . '/data';
 $messagesFile = $dataDir . '/contact_messages.json';
 

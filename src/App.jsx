@@ -10,6 +10,7 @@ import Contact from './pages/Contact'
 import ContactMessages from './pages/ContactMessages'
 import AdminLogin from './pages/AdminLogin'
 import Admin from './pages/Admin'
+import News from './pages/News'
 import NotFound from './pages/NotFound'
 import './App.css'
 
@@ -29,6 +30,8 @@ function App() {
                 <Route path="/admin-login" element={<AdminLogin />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/match/:id" element={<MatchDetails />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/news/:id" element={<News />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

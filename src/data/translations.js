@@ -67,6 +67,17 @@ export const translations = {
     videoUrl: 'رابط الفيديو',
     iframeCode: 'كود iFrame',
 
+    // News & Events
+    newsAndEvents: 'الأخبار والأحداث',
+    viewAllArticles: 'عرض جميع المقالات →',
+    loading: 'جاري التحميل...',
+    readMore: 'اقرأ المزيد →',
+    category: 'الفئة',
+    relatedNews: 'أخبار ذات صلة',
+    date: 'التاريخ',
+    noNews: 'لا توجد أخبار في الوقت الحالي',
+    newsDetail: 'تفاصيل الخبر',
+
     // Footer
     footerText: '© 2024 KooraLive - البث المباشر الرياضي. جميع الحقوق محفوظة.',
   },
@@ -138,6 +149,17 @@ export const translations = {
     videoUrl: 'URL de la vidéo',
     iframeCode: 'Code iFrame',
 
+    // News & Events
+    newsAndEvents: 'Actualités et Événements',
+    viewAllArticles: 'Voir tous les articles →',
+    loading: 'Chargement...',
+    readMore: 'Lire plus →',
+    category: 'Catégorie',
+    relatedNews: 'Actualités liées',
+    date: 'Date',
+    noNews: 'Aucune actualité pour le moment',
+    newsDetail: 'Détails de l\'actualité',
+
     // Footer
     footerText: '© 2024 KooraLive - Streaming Sportif. Tous droits réservés.',
   },
@@ -208,6 +230,17 @@ export const translations = {
     teamName: 'Team Name',
     videoUrl: 'Video URL',
     iframeCode: 'iFrame Code',
+
+    // News & Events
+    newsAndEvents: 'News & Events',
+    viewAllArticles: 'View All Articles →',
+    loading: 'Loading...',
+    readMore: 'Read More →',
+    category: 'Category',
+    relatedNews: 'Related News',
+    date: 'Date',
+    noNews: 'No news available at the moment',
+    newsDetail: 'News Details',
 
     // Footer
     footerText: '© 2024 KooraLive - Sports Streaming. All rights reserved.',

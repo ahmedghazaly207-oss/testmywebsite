@@ -134,7 +134,7 @@ function Contact() {
         <div className={styles.introSection}>
           <p><strong>Bienvenue sur le formulaire de contact KooraLive!</strong></p>
           <p>Pour toute question, suggestion de partenariat, ou signalement de problème technique, utilisez le formulaire ci-dessous ou écrivez-nous directement à:</p>
-          <p className={styles.emailContact}>✉️ matchlivetv@kooralive.com</p>
+          <p className={styles.emailContact}>✉️ kooralive94@gmail.com</p>
           
           <div className={styles.arabicText}>
             <strong>للإعلانات والشراكات على موقعنا يرجى مراسلتنا على العنوان الإلكتروني أعلاه</strong>
