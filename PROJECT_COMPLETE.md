@@ -131,7 +131,7 @@ Test Live football/
 
 ### **7. Branding KooraLive**
 - ⚽ Logo ballon animé (rotation 3s)
-- 🌐 Lien koora-livehd.com sous le logo
+- 🌐 Lien beinmatchlive.com sous le logo
 - 📱 Tout le site "rebranding" KooraLive
 
 ---

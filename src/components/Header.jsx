@@ -41,8 +41,8 @@ function Header() {
             </svg>
             <div className={styles.logoText}>
               <div className={styles.logoTitle}>KooraLive</div>
-              <a href="https://koora-livehd.com" target="_blank" rel="noopener noreferrer" className={styles.logoWebsite}>
-                koora-livehd.com
+              <a href="https://beinmatchlive.com" target="_blank" rel="noopener noreferrer" className={styles.logoWebsite}>
+                beinmatchlive.com
               </a>
             </div>
           </h1>
