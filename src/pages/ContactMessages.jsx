@@ -3,31 +3,26 @@ import styles from './ContactMessages.module.css'
 
 function ContactMessages() {
   const [messages, setMessages] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [selectedMessage, setSelectedMessage] = useState(null)
 
   useEffect(() => {
-    fetchMessages()
-    // Rafraîchir chaque 5 secondes
-    const interval = setInterval(fetchMessages, 5000)
-    return () => clearInterval(interval)
+    setLoading(false)
+    setError(null)
+    // Charger les messages depuis localStorage (pour le développement local)
+    const savedMessages = JSON.parse(localStorage.getItem('contactMessages') || '[]')
+    setMessages(savedMessages)
   }, [])
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('http://localhost:3001/messages')
-      const data = await response.json()
-      
-      if (data.success) {
-        setMessages(data.messages || [])
-        setError(null)
-      } else {
-        setError('Erreur lors de la récupération des messages')
-      }
+      const savedMessages = JSON.parse(localStorage.getItem('contactMessages') || '[]')
+      setMessages(savedMessages)
+      setError(null)
     } catch (err) {
       console.error('Erreur:', err)
-      setError('Erreur de connexion')
+      setError('Erreur de chargement des messages')
     } finally {
       setLoading(false)
     }

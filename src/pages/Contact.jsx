@@ -88,6 +88,19 @@ function Contact() {
     setSuccess(false)
 
     try {
+      // Sauvegarder aussi dans localStorage (pour affichage local)
+      const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]')
+      const newMessage = {
+        id: Date.now(),
+        name: formData.name,
+        email: formData.email,
+        requestType: formData.requestType,
+        message: formData.message,
+        timestamp: new Date().toLocaleString('fr-FR')
+      }
+      messages.push(newMessage)
+      localStorage.setItem('contactMessages', JSON.stringify(messages))
+
       // Send to Formspree
       const response = await fetch('https://formspree.io/f/xvgprwqw', {
         method: 'POST',
