@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import styles from './Admin.module.css'
 
 import { useLanguage } from '../context/LanguageContext'
+import { useDataUpdate } from '../context/DataUpdateContext'
 
 function Admin() {
   const [successMessage, setSuccessMessage] = useState('')
   const { language } = useLanguage()
+  const { triggerNewsUpdate, triggerMatchesUpdate } = useDataUpdate()
     // Utilitaire pour afficher la bonne langue ou la valeur simple
     const getTranslation = (obj) => {
       if (typeof obj === 'string') return obj
@@ -128,6 +130,7 @@ function Admin() {
     const updated = [...matches, newMatch]
     setMatches(updated)
     localStorage.setItem('footballMatches', JSON.stringify(updated))
+    triggerMatchesUpdate()
     resetForm()
     setShowForm(false)
   }
@@ -150,6 +153,7 @@ function Admin() {
     )
     setMatches(updated)
     localStorage.setItem('footballMatches', JSON.stringify(updated))
+    triggerMatchesUpdate()
     resetForm()
     setEditingId(null)
   }
@@ -160,6 +164,7 @@ function Admin() {
       const updated = matches.filter(m => m.id !== id)
       setMatches(updated)
       localStorage.setItem('footballMatches', JSON.stringify(updated))
+      triggerMatchesUpdate()
     }
   }
 
@@ -226,18 +231,35 @@ function Admin() {
 
   // Auto-translate text from Arabic to French and English
   const translateText = async (text) => {
+    if (!text || text.trim().length === 0) {
+      return { ar: text, fr: text, en: text }
+    }
+
     try {
-      const response = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=ar|fr')
-      const fr = await response.json()
-      const frText = fr.responseData?.translatedText || text
-      
-      const response2 = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=ar|en')
-      const en = await response2.json()
-      const enText = en.responseData?.translatedText || text
-      
-      return { ar: text, fr: frText, en: enText }
+      // Utiliser Google Translate via API gratuite
+      // Arabic -> French
+      const frResponse = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ar|fr`, {
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      })
+      const frData = await frResponse.json()
+      const frText = frData.responseData?.translatedText?.trim() || text
+
+      // Arabic -> English
+      const enResponse = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ar|en`, {
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      })
+      const enData = await enResponse.json()
+      const enText = enData.responseData?.translatedText?.trim() || text
+
+      return { 
+        ar: text.trim(),
+        fr: frText,
+        en: enText
+      }
     } catch (error) {
       console.error('Translation error:', error)
+      // Fallback: si la traduction échoue, retourner le texte en arabe pour toutes les langues
+      // (l'utilisateur pourra corriger manuellement s'il le souhaite)
       return { ar: text, fr: text, en: text }
     }
   }
@@ -249,6 +271,7 @@ function Admin() {
     }
     
     // Auto-translate all fields
+    setSuccessMessage('🔄 Translating...')
     const titleTranslated = await translateText(newsFormData.title)
     const subtitleTranslated = await translateText(newsFormData.subtitle)
     const categoryTranslated = await translateText(newsFormData.category)
@@ -266,8 +289,9 @@ function Admin() {
     const updated = [...news, newNews]
     setNews(updated)
     localStorage.setItem('footballNews', JSON.stringify(updated))
+    triggerNewsUpdate()
     setSuccessMessage('✅ News added successfully!')
-    setTimeout(() => setSuccessMessage(''), 2000)
+    setTimeout(() => setSuccessMessage(''), 3000)
     resetNewsForm()
     setShowForm(false)
   }
@@ -279,6 +303,7 @@ function Admin() {
     }
     
     // Auto-translate all fields
+    setSuccessMessage('🔄 Translating...')
     const titleTranslated = await translateText(newsFormData.title)
     const subtitleTranslated = await translateText(newsFormData.subtitle)
     const categoryTranslated = await translateText(newsFormData.category)
@@ -299,8 +324,9 @@ function Admin() {
     )
     setNews(updated)
     localStorage.setItem('footballNews', JSON.stringify(updated))
+    triggerNewsUpdate()
     setSuccessMessage('✅ News updated successfully!')
-    setTimeout(() => setSuccessMessage(''), 2000)
+    setTimeout(() => setSuccessMessage(''), 3000)
     resetNewsForm()
     setEditingId(null)
   }
@@ -310,6 +336,7 @@ function Admin() {
       const updated = news.filter(n => n.id !== id)
       setNews(updated)
       localStorage.setItem('footballNews', JSON.stringify(updated))
+      triggerNewsUpdate()
     }
   }
 
@@ -389,6 +416,23 @@ function Admin() {
           📰 News & Events
         </button>
       </div>
+
+      {/* Success Message - Visible across all sections */}
+      {successMessage && (
+        <div style={{ 
+          color: 'white',
+          backgroundColor: '#27ae60',
+          padding: '1rem',
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          borderRadius: '8px',
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          animation: 'slideInDown 0.3s ease-in-out'
+        }}>
+          {successMessage}
+        </div>
+      )}
 
       {/* ==================== MATCHES TAB ==================== */}
       {activeTab === 'matches' && (

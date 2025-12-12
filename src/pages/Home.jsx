@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
+import { useDataUpdate } from '../context/DataUpdateContext'
 import { matchesData } from '../data/matchesData'
 import MatchCard from '../components/MatchCard'
 import NewsCard from '../components/NewsCard'
@@ -9,11 +10,13 @@ import styles from './Home.module.css'
 
 function Home() {
   const { t } = useLanguage()
+  const { newsUpdate, matchesUpdate } = useDataUpdate()
   const [matches, setMatches] = useState([])
   const [news, setNews] = useState([])
   const matchesSectionRef = useRef(null)
 
-  useEffect(() => {
+  // Fonction pour charger les matchs
+  const loadMatches = () => {
     try {
       // Charger les matchs depuis localStorage ou utiliser les données par défaut
       const stored = localStorage.getItem('footballMatches')
@@ -52,8 +55,10 @@ function Home() {
       console.error('Error loading matches:', error)
       setMatches([])
     }
+  }
 
-    // Charger les actualités
+  // Fonction pour charger les news
+  const loadNews = () => {
     try {
       const storedNews = localStorage.getItem('footballNews')
       if (storedNews) {
@@ -66,7 +71,22 @@ function Home() {
       console.error('Error loading news:', error)
       setNews([])
     }
+  }
+
+  // Charger au mount
+  useEffect(() => {
+    loadMatches()
+    loadNews()
   }, [])
+
+  // Recharger quand les données sont mises à jour depuis Admin
+  useEffect(() => {
+    loadMatches()
+  }, [matchesUpdate])
+
+  useEffect(() => {
+    loadNews()
+  }, [newsUpdate])
 
   // Fonction pour scroller vers les matchs
   const scrollToMatches = () => {

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
+import { useDataUpdate } from '../context/DataUpdateContext'
 import { newsData as defaultNewsData } from '../data/newsData'
 import SEOHead from '../components/SEOHead'
 import styles from './News.module.css'
 
 function News() {
   const { t, language } = useLanguage()
+  const { newsUpdate } = useDataUpdate()
   const { id } = useParams()
   const [news, setNews] = useState(null)
   const [allNews, setAllNews] = useState([])
@@ -27,7 +29,8 @@ function News() {
     return baseKeywords[language] || baseKeywords.en
   }
 
-  useEffect(() => {
+  // Fonction pour charger les news
+  const loadNews = () => {
       // Charger les news depuis localStorage si dispo, sinon depuis newsData.js
       let loadedNews = []
       const stored = localStorage.getItem('footballNews')
@@ -72,7 +75,16 @@ function News() {
       } else {
         setAllNews(finalNews)
       }
-    }, [id, language])
+  }
+
+  useEffect(() => {
+    loadNews()
+  }, [id, language])
+
+  // Recharger quand les données sont mises à jour depuis Admin
+  useEffect(() => {
+    loadNews()
+  }, [newsUpdate, id, language])
 
   if (id && !news) {
     return (
