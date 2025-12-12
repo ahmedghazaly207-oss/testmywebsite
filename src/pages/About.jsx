@@ -1,8 +1,11 @@
+import { useContext } from 'react'
 import { useLanguage } from '../context/LanguageContext'
+import { ThemeContext } from '../context/ThemeContext'
 import styles from './About.module.css'
 
 function About() {
   const { t, language } = useLanguage()
+  const { isDark } = useContext(ThemeContext)
 
   const aboutContent = {
     fr: {
@@ -56,8 +59,8 @@ function About() {
 
   return (
     <div className={styles.aboutPage}>
-      <div className={styles.aboutContainer}>
-        <h1 className={styles.title}>{content.title}</h1>
+      <div className={`${styles.aboutContainer} animate-scaleIn`}>
+        <h1 className={`${styles.title} animate-slideInTop`}>{content.title}</h1>
         
         <section className={styles.section}>
           <p className={styles.text}>{content.intro}</p>

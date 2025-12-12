@@ -1,70 +1,102 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { matchesData } from '../data/matchesData'
-import { newsData } from '../data/newsData'
 import MatchCard from '../components/MatchCard'
 import NewsCard from '../components/NewsCard'
-import { useTodayMatches } from '../hooks/useFootballData'
+import { getMatchStatus } from '../utils/matchStatus'
 import styles from './Home.module.css'
 
 function Home() {
   const { t } = useLanguage()
   const [matches, setMatches] = useState([])
   const [news, setNews] = useState([])
-  const { matches: apiMatches, loading: apiLoading, error: apiError } = useTodayMatches(60000)
+  const matchesSectionRef = useRef(null)
 
   useEffect(() => {
-    // Toujours utiliser les données par défaut au chargement
-    const stored = localStorage.getItem('footballMatches')
-    const defaultMatches = stored ? JSON.parse(stored) : matchesData
-    
-    // Trier les matchs: LIVE en premier, puis Finished, puis Upcoming
-    const sortedMatches = [...defaultMatches].sort((a, b) => {
-      const statusOrder = { 'LIVE': 0, 'Finished': 1, 'Upcoming': 2 }
-      const statusA = statusOrder[a.status] ?? 2
-      const statusB = statusOrder[b.status] ?? 2
-      return statusA - statusB
-    })
-    
-    setMatches(sortedMatches)
-    // Charger les 6 dernières actualités
-    setNews(newsData.slice(0, 6))
+    try {
+      // Charger les matchs depuis localStorage ou utiliser les données par défaut
+      const stored = localStorage.getItem('footballMatches')
+      const defaultMatches = stored ? JSON.parse(stored) : matchesData
+      
+      // Vérifier que defaultMatches est un array
+      if (!Array.isArray(defaultMatches)) {
+        console.error('defaultMatches is not an array:', defaultMatches)
+        setMatches([])
+      } else {
+        // Trier les matchs
+        const sortedMatches = [...defaultMatches].sort((a, b) => {
+          const statusA = getMatchStatus(a.time, a.score1, a.score2)
+          const statusB = getMatchStatus(b.time, b.score1, b.score2)
+          
+          const statusOrder = { 'LIVE': 0, 'Upcoming': 1, 'Finished': 2 }
+          const orderA = statusOrder[statusA] ?? 2
+          const orderB = statusOrder[statusB] ?? 2
+          
+          if (orderA !== orderB) {
+            return orderA - orderB
+          }
+          
+          if (statusA === 'Upcoming' && statusB === 'Upcoming') {
+            const timeA = a.time ? parseInt(a.time.replace(':', '')) : 9999
+            const timeB = b.time ? parseInt(b.time.replace(':', '')) : 9999
+            return timeA - timeB
+          }
+          
+          return 0
+        })
+        
+        setMatches(sortedMatches)
+      }
+    } catch (error) {
+      console.error('Error loading matches:', error)
+      setMatches([])
+    }
+
+    // Charger les actualités
+    try {
+      const storedNews = localStorage.getItem('footballNews')
+      if (storedNews) {
+        const adminNews = JSON.parse(storedNews)
+        if (Array.isArray(adminNews)) {
+          setNews(adminNews.slice(0, 6))
+        }
+      }
+    } catch (error) {
+      console.error('Error loading news:', error)
+      setNews([])
+    }
   }, [])
 
-  // Si l'API retourne des résultats, remplacer les données locales
-  useEffect(() => {
-    if (apiMatches && apiMatches.length > 0) {
-      const sortedMatches = [...apiMatches].sort((a, b) => {
-        const statusOrder = { 'LIVE': 0, 'Finished': 1, 'Upcoming': 2 }
-        const statusA = statusOrder[a.status] ?? 2
-        const statusB = statusOrder[b.status] ?? 2
-        return statusA - statusB
-      })
-      
-      setMatches(sortedMatches)
+  // Fonction pour scroller vers les matchs
+  const scrollToMatches = () => {
+    if (matchesSectionRef.current) {
+      const offset = matchesSectionRef.current.offsetTop - 100
+      window.scrollTo({ top: offset, behavior: 'smooth' })
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-  }, [apiMatches])
+  }
 
   return (
     <div className={styles.home}>
       {/* Hero Section */}
-      <section className={styles.heroSection}>
+      <section className={`${styles.heroSection} animate-slideInTop`}>
         <div className={styles.heroContent}>
-          <h2 className={styles.heroTitle}>{t('liveMatches')}</h2>
           <p className={styles.heroSubtitle}>
             {t('watchNow')}
           </p>
-          {apiLoading && (
-            <p style={{ fontSize: '0.9rem', color: '#b3d9ff', marginTop: '1rem' }}>
-              📡 Récupération des données en direct...
-            </p>
-          )}
+          <button 
+            onClick={scrollToMatches}
+            className={`${styles.todayMatchesBtn} animate-pulse`}
+          >
+            ⚽ {t('liveMatches')}
+          </button>
         </div>
       </section>
 
       {/* Matches Grid */}
-      <section className={styles.matchesSection}>
+      <section className={styles.matchesSection} ref={matchesSectionRef}>
         {matches && matches.length > 0 ? (
           <div className={styles.matchesGrid}>
             {matches.map((match) => (
@@ -73,7 +105,7 @@ function Home() {
           </div>
         ) : (
           <div className={styles.noMatches}>
-            <p>⏳ Chargement des matchs...</p>
+            <p>⏳ {t('noMatches')}</p>
           </div>
         )}
       </section>
@@ -103,7 +135,7 @@ function Home() {
           </div>
         ) : (
           <div className={styles.noNews}>
-            <p>⏳ {t('loading')}</p>
+            <p>⏳ {t('noNews')}</p>
           </div>
         )}
       </section>

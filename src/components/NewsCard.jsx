@@ -11,7 +11,7 @@ function NewsCard({ id, title, image, subtitle, category, date }) {
   }
 
   return (
-    <Link to={`/news/${id}`} className={styles.newsCard}>
+    <Link to={`/news/${id}`} className={`${styles.newsCard} animate-slideInRight`}>
       <div className={styles.imageContainer}>
         <img src={image} alt={getTranslation(title)} className={styles.image} />
         <span className={styles.category}>{getTranslation(category)}</span>

@@ -1,7 +1,12 @@
 import { useState } from 'react'
+import { useContext } from 'react'
+import { useLanguage } from '../context/LanguageContext'
+import { ThemeContext } from '../context/ThemeContext'
 import styles from './Contact.module.css'
 
 function Contact() {
+  const { t, language } = useLanguage()
+  const { isDark } = useContext(ThemeContext)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,19 +56,19 @@ function Contact() {
     const newErrors = {}
 
     if (!validateField('name', formData.name)) {
-      newErrors.name = 'Veuillez entrer un nom valide (minimum 2 caractères)'
+      newErrors.name = t('nameRequired')
     }
 
     if (!validateField('email', formData.email)) {
-      newErrors.email = 'Veuillez entrer un email valide (ex: name@example.com)'
+      newErrors.email = t('emailInvalid')
     }
 
     if (!validateField('requestType', formData.requestType)) {
-      newErrors.requestType = 'Veuillez sélectionner un type de requête'
+      newErrors.requestType = language === 'ar' ? 'يرجى اختيار نوع الطلب' : language === 'fr' ? 'Veuillez sélectionner un type de requête' : 'Please select a request type'
     }
 
     if (!validateField('message', formData.message)) {
-      newErrors.message = 'Veuillez entrer un message (minimum 10 caractères)'
+      newErrors.message = t('messageRequired')
     }
 
     setErrors(newErrors)
@@ -83,32 +88,27 @@ function Contact() {
     setSuccess(false)
 
     try {
-      const formDataObj = new FormData()
-      formDataObj.append('name', formData.name)
-      formDataObj.append('email', formData.email)
-      formDataObj.append('requestType', formData.requestType)
-      formDataObj.append('message', formData.message)
-
-      const response = await fetch('http://localhost:3001/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams(formData)
-      })
-
-      const result = await response.json()
-
-      if (response.ok && result.success) {
-        setSuccess(true)
-        setFormData({ name: '', email: '', requestType: '', message: '' })
-        setTimeout(() => setSuccess(false), 5000)
-      } else {
-        setErrors({ submit: result.message || 'Erreur lors de l\'envoi' })
+      // Save to localStorage (pour tester sans backend PHP)
+      const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]')
+      const newMessage = {
+        id: Date.now(),
+        name: formData.name,
+        email: formData.email,
+        requestType: formData.requestType,
+        message: formData.message,
+        date: new Date().toISOString()
       }
+      messages.push(newMessage)
+      localStorage.setItem('contactMessages', JSON.stringify(messages))
+      
+      // Simulated success
+      setSuccess(true)
+      setFormData({ name: '', email: '', requestType: '', message: '' })
+      setTimeout(() => setSuccess(false), 5000)
     } catch (error) {
-      console.error('Erreur:', error)
-      setErrors({ submit: 'Erreur de connexion. Veuillez vérifier votre connexion.' })
+      console.error('Error:', error)
+      const connectionError = language === 'ar' ? 'خطأ في الاتصال. يرجى التحقق من الاتصال بالإنترنت.' : language === 'fr' ? 'Erreur de connexion. Veuillez vérifier votre connexion.' : 'Connection error. Please check your connection.'
+      setErrors({ submit: connectionError })
     } finally {
       setLoading(false)
     }
@@ -125,27 +125,31 @@ function Contact() {
     <div className={styles.contactPage}>
       <div className={styles.container}>
         {/* Header */}
-        <header className={styles.header}>
-          <h1>⚽ Contactez-nous | KooraLive</h1>
-          <p className={styles.subtitle}>Nous sommes là pour vous aider</p>
+        <header className={`${styles.header} animate-slideInTop`}>
+          <h1>{t('contactUs')}</h1>
+          <p className={styles.subtitle}>
+            {language === 'ar' ? 'نحن هنا لخدمتك' : language === 'fr' ? 'Nous sommes là pour vous aider' : 'We are here to help you'}
+          </p>
         </header>
 
         {/* Intro Section */}
         <div className={styles.introSection}>
-          <p><strong>Bienvenue sur le formulaire de contact KooraLive!</strong></p>
-          <p>Pour toute question, suggestion de partenariat, ou signalement de problème technique, utilisez le formulaire ci-dessous ou écrivez-nous directement à:</p>
-          <p className={styles.emailContact}>✉️ kooralive94@gmail.com</p>
+          <p><strong>{t('welcomeContact')}</strong></p>
+          <p>{t('contactIntro')}</p>
+          <p className={styles.emailContact}>✉️ kooramatchlive@gmail.com</p>
           
-          <div className={styles.arabicText}>
-            <strong>للإعلانات والشراكات على موقعنا يرجى مراسلتنا على العنوان الإلكتروني أعلاه</strong>
-            <p>نحن هنا لخدمتك والإجابة على جميع استفساراتك</p>
-          </div>
+          {language === 'ar' && (
+            <div className={styles.arabicText}>
+              <strong>للإعلانات والشراكات على منصة KooraMatchLive يرجى مراسلتنا على العنوان الإلكتروني أعلاه</strong>
+              <p>نحن هنا لخدمتك والإجابة على جميع استفساراتك</p>
+            </div>
+          )}
         </div>
 
         {/* Success Message */}
         {success && (
           <div className={styles.successMessage}>
-            ✅ Votre message a été envoyé avec succès! Nous vous répondrons bientôt.
+            {t('successMessage')}
           </div>
         )}
 
@@ -155,14 +159,14 @@ function Contact() {
             {/* Name & Email Row */}
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label htmlFor="name">Votre Nom *</label>
+                <label htmlFor="name">{t('name')} *</label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Votre Nom"
+                  placeholder={language === 'ar' ? 'اسمك الكامل' : language === 'fr' ? 'Votre Nom' : 'Your Name'}
                   className={errors.name ? styles.error : ''}
                 />
                 {errors.name && (
@@ -171,14 +175,14 @@ function Contact() {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="email">Votre Email *</label>
+                <label htmlFor="email">{t('email')} *</label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="votre.email@exemple.com"
+                  placeholder={language === 'ar' ? 'بريدك@مثال.com' : language === 'fr' ? 'votre.email@exemple.com' : 'your.email@example.com'}
                   className={errors.email ? styles.error : ''}
                 />
                 {errors.email && (
@@ -189,7 +193,7 @@ function Contact() {
 
             {/* Request Type */}
             <div className={styles.formGroup}>
-              <label htmlFor="requestType">Type de Requête *</label>
+              <label htmlFor="requestType">{t('requestType')} *</label>
               <select
                 id="requestType"
                 name="requestType"
@@ -197,11 +201,13 @@ function Contact() {
                 onChange={handleInputChange}
                 className={errors.requestType ? styles.error : ''}
               >
-                <option value="">-- Sélectionnez un type --</option>
-                <option value="Publicité">🎯 Publicité & Partenariat</option>
-                <option value="Problème technique">🔧 Problème technique</option>
-                <option value="Suggestions">💡 Suggestions & Feedback</option>
-                <option value="Autre">📞 Autre</option>
+                <option value="">
+                  {language === 'ar' ? '-- اختر النوع --' : language === 'fr' ? '-- Sélectionnez un type --' : '-- Select a type --'}
+                </option>
+                <option value={t('advertising')}>🎯 {t('advertising')}</option>
+                <option value={t('technicalIssue')}>🔧 {t('technicalIssue')}</option>
+                <option value={t('suggestions')}>💡 {t('suggestions')}</option>
+                <option value={t('other')}>📞 {t('other')}</option>
               </select>
               {errors.requestType && (
                 <div className={styles.errorMessage}>{errors.requestType}</div>
@@ -210,13 +216,13 @@ function Contact() {
 
             {/* Message */}
             <div className={styles.formGroup}>
-              <label htmlFor="message">Votre Message *</label>
+              <label htmlFor="message">{t('message')} *</label>
               <textarea
                 id="message"
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
-                placeholder="Votre message ici..."
+                placeholder={language === 'ar' ? 'اكتب رسالتك هنا...' : language === 'fr' ? 'Votre message ici...' : 'Your message here...'}
                 className={errors.message ? styles.error : ''}
               />
               {errors.message && (
@@ -233,17 +239,17 @@ function Contact() {
             {loading && (
               <div className={styles.loading}>
                 <span className={styles.spinner}></span>
-                Envoi en cours...
+                {language === 'ar' ? 'جاري الإرسال...' : language === 'fr' ? 'Envoi en cours...' : 'Sending...'}
               </div>
             )}
 
             {/* Buttons */}
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.btnSubmit} disabled={loading}>
-                {loading ? 'Envoi en cours...' : 'Envoyer le Message'}
+                {loading ? (language === 'ar' ? 'جاري الإرسال...' : language === 'fr' ? 'Envoi en cours...' : 'Sending...') : t('submit')}
               </button>
               <button type="reset" className={styles.btnReset} onClick={handleReset} disabled={loading}>
-                Réinitialiser
+                {t('reset')}
               </button>
             </div>
           </form>

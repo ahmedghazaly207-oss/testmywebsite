@@ -7,18 +7,18 @@ export const seoConfig = {
   siteUrl: 'https://kooramatchlive.com',
   siteEmail: 'kooralive94@gmail.com',
   
-  // Keywords principaux
+  // Keywords optimisés pour Google Ranking (SEO Agressif - Tous les tournois majeurs)
   keywords: {
-    ar: 'كرة القدم, مباريات مباشرة, أخبار كرة القدم, بث مباشر, يورو 2024, كأس العالم, الدوري, أحداث رياضية, نقل مباشر',
-    fr: 'football, matchs en direct, actualités football, streaming direct, Euro 2024, Coupe du monde, ligue, événements sportifs',
-    en: 'football, live matches, football news, live streaming, Euro 2024, World Cup, league, sports events'
+    ar: 'كورا ماتش لايف, كرة القدم مباشر, مباريات مباشرة, بث مباشر كرة القدم, الدوري الإنجليزي, الدوري الإسباني, الدوري الإيطالي, الدوري الألماني, الدوري الفرنسي, دوري الأبطال, كأس العالم, يورو 2024, كوبا أميركا, دوري أوروبا, تصفيات كأس العالم, مباريات اليوم, أخبار رياضية, البث المباشر, نقل مباشر, شاهد مباريات, ليفربول, مانشستر يونايتد, ريال مدريد, برشلونة, باريس سان جيرمان, جوفنتوس, بايرن ميونخ, توتنهام, أرسنال, مانشستر سيتي',
+    fr: 'KooraMatchLive, football direct, matchs en direct, streaming football, Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Ligue des Champions, Coupe du Monde, Euro 2024, Copa America, Ligue Europa, Conference League, football gratuit, regarder football, actualités football, transferts football, mercato, matchs à venir, résultats football, classement, statistiques',
+    en: 'KooraMatchLive, live football, football live stream, watch football online, Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Champions League, World Cup, Euro 2024, Copa America, Europa League, Conference League, live matches, football news, football updates, match results, football statistics, football scores, transfer news, football betting'
   },
 
-  // Meta descriptions
+  // Meta descriptions optimisées pour CTR
   descriptions: {
-    ar: 'BeinMatchLive - أفضل منصة متابعة مباريات كرة القدم بث مباشر. شاهد جميع المباريات الحية والأحداث الرياضية العالمية مع تحديثات فورية.',
-    fr: 'BeinMatchLive - La meilleure plateforme de suivi des matchs de football en direct. Regardez tous les matchs en direct et les événements sportifs mondiaux avec des mises à jour en temps réel.',
-    en: 'BeinMatchLive - The best platform for following live football matches. Watch all live matches and global sports events with real-time updates.'
+    ar: 'KooraMatchLive - أفضل منصة بث مباشر لمباريات كرة القدم | شاهد الدوري الإنجليزي والإسباني والإيطالي والألماني ودوري الأبطال والكؤوس العالمية بجودة عالية وبدون تأخير',
+    fr: 'KooraMatchLive - Meilleur site de streaming football en direct | Regardez la Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Champions League, Coupe du Monde sans restriction | Actualités et résultats en temps réel',
+    en: 'KooraMatchLive - Best live football streaming platform | Watch Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Champions League, World Cup in HD | Live scores, news and updates'
   },
 
   // Localisation pour les arabes

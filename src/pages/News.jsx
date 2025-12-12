@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
-import { newsData } from '../data/newsData'
+import { newsData as defaultNewsData } from '../data/newsData'
 import SEOHead from '../components/SEOHead'
 import styles from './News.module.css'
 
@@ -28,22 +28,51 @@ function News() {
   }
 
   useEffect(() => {
-    // Charger l'actualité spécifique si un ID est fourni
-    if (id) {
-      const foundNews = newsData.find(n => n.id === parseInt(id))
-      if (foundNews) {
-        setNews(foundNews)
-        // Charger les actualités liées
-        const related = newsData
-          .filter(n => n.id !== parseInt(id))
-          .slice(0, 3)
-        setRelatedNews(related)
+      // Charger les news depuis localStorage si dispo, sinon depuis newsData.js
+      let loadedNews = []
+      const stored = localStorage.getItem('footballNews')
+      if (stored) {
+        try {
+          loadedNews = JSON.parse(stored)
+        } catch {
+          loadedNews = []
+        }
+      } else {
+        loadedNews = defaultNewsData
       }
-    } else {
-      // Charger toutes les actualités
-      setAllNews(newsData)
-    }
-  }, [id, language])
+
+
+      // On garde la version admin si le contenu est différent de la version par défaut (même id)
+      let finalNews = []
+      if (loadedNews.length > 0) {
+        finalNews = loadedNews.map(n => {
+          const def = defaultNewsData.find(d => d.id === n.id)
+          if (!def) return n
+          // Si le contenu a changé, on garde la version admin
+          if (JSON.stringify(n) !== JSON.stringify(def)) return n
+          // Sinon, on ignore (on affichera la version par défaut plus bas si aucune version custom n'existe)
+          return null
+        }).filter(Boolean)
+        // Si aucune version custom, fallback sur les news par défaut
+        if (finalNews.length === 0) finalNews = defaultNewsData
+      } else {
+        finalNews = defaultNewsData
+      }
+
+      if (id) {
+        const foundNews = finalNews.find(n => n.id === parseInt(id))
+        if (foundNews) {
+          setNews(foundNews)
+          // Charger les actualités liées
+          const related = finalNews
+            .filter(n => n.id !== parseInt(id))
+            .slice(0, 3)
+          setRelatedNews(related)
+        }
+      } else {
+        setAllNews(finalNews)
+      }
+    }, [id, language])
 
   if (id && !news) {
     return (

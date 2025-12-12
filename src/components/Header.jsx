@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import LanguageToggle from './LanguageToggle'
 import styles from './Header.module.css'
@@ -18,7 +19,7 @@ function Header() {
     <header className={styles.header}>
       <div className={styles.headerContent}>
         {/* Logo */}
-        <div className={styles.logoSection}>
+        <Link to="/" className={styles.logoSection}>
           <h1 className={styles.logo}>
             <svg className={styles.logoSvg} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
               {/* White base ball */}
@@ -46,7 +47,7 @@ function Header() {
               </a>
             </div>
           </h1>
-        </div>
+        </Link>
 
         {/* Date */}
         <div className={styles.dateSection}>

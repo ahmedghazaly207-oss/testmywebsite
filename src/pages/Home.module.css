@@ -1,7 +1,7 @@
 .home {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1.2rem;
   animation: fadeIn 0.6s ease-out;
 }
 
@@ -19,7 +19,7 @@
 /* Hero Section */
 .heroSection {
   text-align: center;
-  padding: 2rem 1.5rem;
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
   background: linear-gradient(135deg, rgba(65, 105, 225, 0.08), rgba(65, 105, 225, 0.03));
   border-radius: 24px;
   border: 1px solid rgba(65, 105, 225, 0.12);
@@ -28,8 +28,33 @@
 }
 
 .heroContent {
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
+}
+
+.todayMatchesBtn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, #DA2FFF, #B800FF);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(218, 47, 255, 0.4);
+}
+
+.todayMatchesBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(218, 47, 255, 0.6);
+  background: linear-gradient(135deg, #B800FF, #9400CC);
+}
+
+.todayMatchesBtn:active {
+  transform: translateY(0);
 }
 
 .heroTitle {
@@ -44,11 +69,27 @@
 }
 
 .heroSubtitle {
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   color: var(--text-secondary);
-  line-height: 1.5;
-  font-weight: 400;
+  line-height: 1.8;
+  font-weight: 500;
   margin-bottom: 0;
+}
+
+/* Section Title */
+.sectionTitleWrapper {
+  padding: 0.2rem 1.5rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.5px;
 }
 
 .adminLink {
@@ -59,7 +100,7 @@
 .matchesSection {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.2rem;
 }
 
 .matchesGrid {

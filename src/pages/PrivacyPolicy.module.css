@@ -1,0 +1,148 @@
+.privacyPage {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 150, 255, 0.3);
+}
+
+.lastUpdate {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.introSection {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  animation: slideIn 0.8s ease-out;
+}
+
+.introSection p {
+  color: var(--text-primary);
+  line-height: 1.8;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+}
+
+.subsection {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.subsectionTitle {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.content {
+  color: var(--text-primary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .privacyPage {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.3rem;
+  }
+
+  .subsectionTitle {
+    font-size: 1rem;
+  }
+
+  .subsection {
+    padding-left: 1rem;
+  }
+
+  .introSection {
+    padding: 1rem;
+  }
+
+  .content {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.1rem;
+  }
+
+  .subsectionTitle {
+    font-size: 0.95rem;
+  }
+}

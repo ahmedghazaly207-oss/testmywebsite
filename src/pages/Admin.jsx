@@ -2,7 +2,17 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './Admin.module.css'
 
+import { useLanguage } from '../context/LanguageContext'
+
 function Admin() {
+  const [successMessage, setSuccessMessage] = useState('')
+  const { language } = useLanguage()
+    // Utilitaire pour afficher la bonne langue ou la valeur simple
+    const getTranslation = (obj) => {
+      if (typeof obj === 'string') return obj
+      if (!obj) return ''
+      return obj[language] || obj.fr || obj.en || ''
+    }
   const navigate = useNavigate()
   const [matches, setMatches] = useState([])
   const [news, setNews] = useState([])
@@ -30,12 +40,12 @@ function Admin() {
     videoUrl: ''
   })
 
-  // Form data for news
+  // Form data for news - SINGLE PLACE (auto-translate)
   const [newsFormData, setNewsFormData] = useState({
-    title: { ar: '', fr: '', en: '' },
-    subtitle: { ar: '', fr: '', en: '' },
-    category: { ar: '', fr: '', en: '' },
-    content: { ar: '', fr: '', en: '' },
+    title: '',
+    subtitle: '',
+    category: '',
+    content: '',
     image: '',
     date: new Date().toISOString().split('T')[0]
   })
@@ -205,57 +215,92 @@ function Admin() {
     setEditingId(null)
   }
 
-  // Logout admin
-  const handleLogout = () => {
-    localStorage.removeItem('adminSession')
-    navigate('/')
+  // ==================== NEWS HANDLERS ====================
+  const handleNewsInputChange = (e, field) => {
+    const { value } = e.target
+    setNewsFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
   }
 
-  // ==================== NEWS HANDLERS ====================
-  const handleNewsInputChange = (e, field, lang = null) => {
-    const { value } = e.target
-    if (lang) {
-      setNewsFormData(prev => ({
-        ...prev,
-        [field]: { ...prev[field], [lang]: value }
-      }))
-    } else {
-      setNewsFormData(prev => ({
-        ...prev,
-        [field]: value
-      }))
+  // Auto-translate text from Arabic to French and English
+  const translateText = async (text) => {
+    try {
+      const response = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=ar|fr')
+      const fr = await response.json()
+      const frText = fr.responseData?.translatedText || text
+      
+      const response2 = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=ar|en')
+      const en = await response2.json()
+      const enText = en.responseData?.translatedText || text
+      
+      return { ar: text, fr: frText, en: enText }
+    } catch (error) {
+      console.error('Translation error:', error)
+      return { ar: text, fr: text, en: text }
     }
   }
 
-  const handleAddNews = () => {
-    if (!newsFormData.title.ar || !newsFormData.title.en || !newsFormData.image) {
-      alert('Please fill in required fields (Title in Arabic/English and Image)')
+  const handleAddNews = async () => {
+    if (!newsFormData.title || !newsFormData.image) {
+      alert('Please fill in Title and Image')
       return
     }
-
+    
+    // Auto-translate all fields
+    const titleTranslated = await translateText(newsFormData.title)
+    const subtitleTranslated = await translateText(newsFormData.subtitle)
+    const categoryTranslated = await translateText(newsFormData.category)
+    const contentTranslated = await translateText(newsFormData.content)
+    
     const newNews = {
       id: Math.max(0, ...news.map(n => n.id), 0) + 1,
-      ...newsFormData
+      title: titleTranslated,
+      subtitle: subtitleTranslated,
+      category: categoryTranslated,
+      content: contentTranslated,
+      image: newsFormData.image,
+      date: newsFormData.date
     }
-
     const updated = [...news, newNews]
     setNews(updated)
     localStorage.setItem('footballNews', JSON.stringify(updated))
+    setSuccessMessage('✅ News added successfully!')
+    setTimeout(() => setSuccessMessage(''), 2000)
     resetNewsForm()
     setShowForm(false)
   }
 
-  const handleUpdateNews = () => {
-    if (!newsFormData.title.ar || !newsFormData.title.en || !newsFormData.image) {
-      alert('Please fill in required fields (Title in Arabic/English and Image)')
+  const handleUpdateNews = async () => {
+    if (!newsFormData.title || !newsFormData.image) {
+      alert('Please fill in Title and Image')
       return
     }
-
-    const updated = news.map(n => 
-      n.id === editingId ? { ...newsFormData, id: editingId } : n
+    
+    // Auto-translate all fields
+    const titleTranslated = await translateText(newsFormData.title)
+    const subtitleTranslated = await translateText(newsFormData.subtitle)
+    const categoryTranslated = await translateText(newsFormData.category)
+    const contentTranslated = await translateText(newsFormData.content)
+    
+    const updated = news.map(n =>
+      n.id === editingId
+        ? {
+            id: editingId,
+            title: titleTranslated,
+            subtitle: subtitleTranslated,
+            category: categoryTranslated,
+            content: contentTranslated,
+            image: newsFormData.image,
+            date: newsFormData.date
+          }
+        : n
     )
     setNews(updated)
     localStorage.setItem('footballNews', JSON.stringify(updated))
+    setSuccessMessage('✅ News updated successfully!')
+    setTimeout(() => setSuccessMessage(''), 2000)
     resetNewsForm()
     setEditingId(null)
   }
@@ -270,24 +315,23 @@ function Admin() {
 
   const handleEditNews = (newsItem) => {
     setNewsFormData({
-      title: newsItem.title || { ar: '', fr: '', en: '' },
-      subtitle: newsItem.subtitle || { ar: '', fr: '', en: '' },
-      category: newsItem.category || { ar: '', fr: '', en: '' },
-      content: newsItem.content || { ar: '', fr: '', en: '' },
+      title: newsItem.title.ar || newsItem.title,
+      subtitle: newsItem.subtitle.ar || newsItem.subtitle || '',
+      category: newsItem.category.ar || newsItem.category || '',
+      content: newsItem.content.ar || newsItem.content || '',
       image: newsItem.image || '',
       date: newsItem.date || new Date().toISOString().split('T')[0]
     })
     setEditingId(newsItem.id)
-    setActiveTab('news')
     setShowForm(true)
   }
 
   const resetNewsForm = () => {
     setNewsFormData({
-      title: { ar: '', fr: '', en: '' },
-      subtitle: { ar: '', fr: '', en: '' },
-      category: { ar: '', fr: '', en: '' },
-      content: { ar: '', fr: '', en: '' },
+      title: '',
+      subtitle: '',
+      category: '',
+      content: '',
       image: '',
       date: new Date().toISOString().split('T')[0]
     })
@@ -654,18 +698,23 @@ function Admin() {
             )}
           </div>
 
-          {/* News Form */}
+          {/* News Form - SINGLE PLACE (auto-translates) */}
           {showForm && (
             <div className={styles.formContainer}>
               <h2>{editingId ? 'Edit News' : 'Add New News'}</h2>
+              <p style={{ color: '#666', marginBottom: '1rem', fontSize: '0.9rem' }}>✏️ Fill in Arabic - automatically translated to French & English</p>
+              {successMessage && (
+                <div style={{ color: 'green', fontWeight: 'bold', marginBottom: '1rem', textAlign: 'center' }}>{successMessage}</div>
+              )}
+              
               <form className={styles.form}>
                 {/* Image */}
                 <div className={styles.formGroup}>
-                  <label>Image URL * (Max recommended 2 images per news)</label>
+                  <label>Image URL *</label>
                   <input
                     type="url"
                     value={newsFormData.image}
-                    onChange={(e) => handleNewsInputChange(e, 'image')}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, image: e.target.value }))}
                     placeholder="https://example.com/image.jpg"
                   />
                   {newsFormData.image && (
@@ -681,137 +730,52 @@ function Admin() {
                   <input
                     type="date"
                     value={newsFormData.date}
-                    onChange={(e) => handleNewsInputChange(e, 'date')}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, date: e.target.value }))}
                   />
                 </div>
 
-                {/* Arabic */}
-                <div className={styles.languageSection}>
-                  <h3>🇸🇦 Arabic (العربية)</h3>
-                  <div className={styles.formRow}>
-                    <div className={styles.formGroup}>
-                      <label>Title *</label>
-                      <input
-                        type="text"
-                        value={newsFormData.title.ar}
-                        onChange={(e) => handleNewsInputChange(e, 'title', 'ar')}
-                        placeholder="عنوان الخبر"
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Category</label>
-                      <input
-                        type="text"
-                        value={newsFormData.category.ar}
-                        onChange={(e) => handleNewsInputChange(e, 'category', 'ar')}
-                        placeholder="الفئة"
-                      />
-                    </div>
-                  </div>
+                {/* Title (Arabic) */}
+                <div className={styles.formRow}>
                   <div className={styles.formGroup}>
-                    <label>Subtitle</label>
+                    <label>Title (Arabic) *</label>
                     <input
                       type="text"
-                      value={newsFormData.subtitle.ar}
-                      onChange={(e) => handleNewsInputChange(e, 'subtitle', 'ar')}
-                      placeholder="الوصف القصير"
+                      value={newsFormData.title}
+                      onChange={(e) => setNewsFormData(prev => ({ ...prev, title: e.target.value }))}
+                      placeholder="عنوان الخبر"
                     />
                   </div>
                   <div className={styles.formGroup}>
-                    <label>Content</label>
-                    <textarea
-                      value={newsFormData.content.ar}
-                      onChange={(e) => handleNewsInputChange(e, 'content', 'ar')}
-                      placeholder="محتوى الخبر..."
-                      rows="4"
+                    <label>Category (Arabic)</label>
+                    <input
+                      type="text"
+                      value={newsFormData.category}
+                      onChange={(e) => setNewsFormData(prev => ({ ...prev, category: e.target.value }))}
+                      placeholder="الفئة"
                     />
                   </div>
                 </div>
 
-                {/* French */}
-                <div className={styles.languageSection}>
-                  <h3>🇫🇷 French (Français)</h3>
-                  <div className={styles.formRow}>
-                    <div className={styles.formGroup}>
-                      <label>Title</label>
-                      <input
-                        type="text"
-                        value={newsFormData.title.fr}
-                        onChange={(e) => handleNewsInputChange(e, 'title', 'fr')}
-                        placeholder="Titre de l'actualité"
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Category</label>
-                      <input
-                        type="text"
-                        value={newsFormData.category.fr}
-                        onChange={(e) => handleNewsInputChange(e, 'category', 'fr')}
-                        placeholder="Catégorie"
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Subtitle</label>
-                    <input
-                      type="text"
-                      value={newsFormData.subtitle.fr}
-                      onChange={(e) => handleNewsInputChange(e, 'subtitle', 'fr')}
-                      placeholder="Description courte"
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Content</label>
-                    <textarea
-                      value={newsFormData.content.fr}
-                      onChange={(e) => handleNewsInputChange(e, 'content', 'fr')}
-                      placeholder="Contenu de l'actualité..."
-                      rows="4"
-                    />
-                  </div>
+                {/* Subtitle */}
+                <div className={styles.formGroup}>
+                  <label>Subtitle (Arabic)</label>
+                  <input
+                    type="text"
+                    value={newsFormData.subtitle}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+                    placeholder="وصف قصير"
+                  />
                 </div>
 
-                {/* English */}
-                <div className={styles.languageSection}>
-                  <h3>🇬🇧 English</h3>
-                  <div className={styles.formRow}>
-                    <div className={styles.formGroup}>
-                      <label>Title *</label>
-                      <input
-                        type="text"
-                        value={newsFormData.title.en}
-                        onChange={(e) => handleNewsInputChange(e, 'title', 'en')}
-                        placeholder="News title"
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Category</label>
-                      <input
-                        type="text"
-                        value={newsFormData.category.en}
-                        onChange={(e) => handleNewsInputChange(e, 'category', 'en')}
-                        placeholder="Category"
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Subtitle</label>
-                    <input
-                      type="text"
-                      value={newsFormData.subtitle.en}
-                      onChange={(e) => handleNewsInputChange(e, 'subtitle', 'en')}
-                      placeholder="Short description"
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label>Content</label>
-                    <textarea
-                      value={newsFormData.content.en}
-                      onChange={(e) => handleNewsInputChange(e, 'content', 'en')}
-                      placeholder="News content..."
-                      rows="4"
-                    />
-                  </div>
+                {/* Content */}
+                <div className={styles.formGroup}>
+                  <label>Content (Arabic)</label>
+                  <textarea
+                    value={newsFormData.content}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, content: e.target.value }))}
+                    placeholder="محتوى الخبر"
+                    rows="6"
+                  />
                 </div>
 
                 <div className={styles.formActions}>
@@ -851,8 +815,8 @@ function Admin() {
                         <img src={newsItem.image} alt="News" className={styles.newsImage} onError={(e) => e.target.style.display = 'none'} />
                       )}
                       <div className={styles.newsInfo}>
-                        <h4>{newsItem.title.en || newsItem.title.ar}</h4>
-                        <p>{newsItem.subtitle.en || newsItem.subtitle.ar}</p>
+                        <h4>{getTranslation(newsItem.title)}</h4>
+                        <p>{getTranslation(newsItem.subtitle)}</p>
                         <span className={styles.newsDate}>{newsItem.date}</span>
                       </div>
                     </div>
@@ -877,279 +841,6 @@ function Admin() {
           </div>
         </>
       )}
-    </div>
-  )
-}
-
-export default Admin
-
-
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>League *</label>
-                <input
-                  type="text"
-                  name="league"
-                  value={formData.league}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Premier League"
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Time *</label>
-                <input
-                  type="text"
-                  name="time"
-                  value={formData.time}
-                  onChange={handleInputChange}
-                  placeholder="e.g., 20:30"
-                />
-              </div>
-            </div>
-
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Team 1 *</label>
-                <input
-                  type="text"
-                  name="team1"
-                  value={formData.team1}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Manchester United"
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Team 2 *</label>
-                <input
-                  type="text"
-                  name="team2"
-                  value={formData.team2}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Liverpool"
-                />
-              </div>
-            </div>
-
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Team 1 Logo URL</label>
-                <input
-                  type="url"
-                  name="team1Logo"
-                  value={formData.team1Logo}
-                  onChange={handleInputChange}
-                  placeholder="https://example.com/team1-logo.png"
-                />
-                {formData.team1Logo && (
-                  <div className={styles.logoPreview}>
-                    <img src={formData.team1Logo} alt="Team 1 Logo" onError={(e) => e.target.style.display = 'none'} />
-                  </div>
-                )}
-              </div>
-              <div className={styles.formGroup}>
-                <label>Team 2 Logo URL</label>
-                <input
-                  type="url"
-                  name="team2Logo"
-                  value={formData.team2Logo}
-                  onChange={handleInputChange}
-                  placeholder="https://example.com/team2-logo.png"
-                />
-                {formData.team2Logo && (
-                  <div className={styles.logoPreview}>
-                    <img src={formData.team2Logo} alt="Team 2 Logo" onError={(e) => e.target.style.display = 'none'} />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Status</label>
-                <select name="status" value={formData.status} onChange={handleInputChange}>
-                  <option>LIVE</option>
-                  <option>Upcoming</option>
-                  <option>Finished</option>
-                </select>
-              </div>
-              <div className={styles.formGroup}>
-                <label>Stadium</label>
-                <input
-                  type="text"
-                  name="stadium"
-                  value={formData.stadium}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Old Trafford"
-                />
-              </div>
-            </div>
-
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Score Team 1 (Laisser vide pour "À venir")</label>
-                <input
-                  type="number"
-                  name="score1"
-                  value={formData.score1 !== null ? formData.score1 : ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    score1: e.target.value === '' ? null : parseInt(e.target.value) || 0
-                  }))}
-                  placeholder="e.g., 2"
-                  min="0"
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Score Team 2 (Laisser vide pour "À venir")</label>
-                <input
-                  type="number"
-                  name="score2"
-                  value={formData.score2 !== null ? formData.score2 : ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    score2: e.target.value === '' ? null : parseInt(e.target.value) || 0
-                  }))}
-                  placeholder="e.g., 1"
-                  min="0"
-                />
-              </div>
-            </div>
-
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Referee</label>
-                <input
-                  type="text"
-                  name="referee"
-                  value={formData.referee}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Mike Dean"
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Attendance</label>
-                <input
-                  type="text"
-                  name="attendance"
-                  value={formData.attendance}
-                  onChange={handleInputChange}
-                  placeholder="e.g., 74,000"
-                />
-              </div>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>URL de la Vidéo (Lien Direct)</label>
-              <input
-                type="url"
-                name="videoUrl"
-                value={formData.videoUrl}
-                onChange={handleInputChange}
-                placeholder="e.g., https://example.com/stream.m3u8 or https://yourdomain.com/video.mp4"
-              />
-              <small style={{ color: '#aaa', marginTop: '0.5rem', display: 'block' }}>
-                Optionnel: Entrez l'URL directe du flux vidéo. Accepte les formats HLS (m3u8), MP4, WebM, etc.
-              </small>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Code iFrame d'Intégration Vidéo</label>
-              <textarea
-                name="iframeLink"
-                value={formData.iframeLink}
-                onChange={handleInputChange}
-                placeholder="Paste complete iframe code here: <iframe src='...' width='...' height='...'></iframe>"
-                rows="4"
-              />
-              <small style={{ color: '#aaa', marginTop: '0.5rem', display: 'block' }}>
-                ⚠️ Le code doit commencer par &lt;iframe et contenir le code HTML complet. Exemple: &lt;iframe src="https://..." width="100%" height="600"&gt;&lt;/iframe&gt;
-              </small>
-            </div>
-
-            <div className={styles.formGroup}>
-              <label>Description</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                placeholder="Match description..."
-                rows="3"
-              />
-            </div>
-
-            <div className={styles.formActions}>
-              <button
-                type="button"
-                className={styles.submitBtn}
-                onClick={editingId ? handleUpdateMatch : handleAddMatch}
-              >
-                {editingId ? 'Update Match' : 'Add Match'}
-              </button>
-              <button
-                type="button"
-                className={styles.cancelBtn}
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* Matches List */}
-      <div className={styles.matchesList}>
-        <h2>All Matches ({matches.length})</h2>
-        {matches.length === 0 ? (
-          <p className={styles.empty}>No matches yet. Add your first match!</p>
-        ) : (
-          <div className={styles.table}>
-            <div className={styles.tableHeader}>
-              <div className={styles.col1}>League</div>
-              <div className={styles.col2}>Team 1</div>
-              <div className={styles.col3}>Team 2</div>
-              <div className={styles.col4}>Time</div>
-              <div className={styles.col5}>Status</div>
-              <div className={styles.col5b}>Score</div>
-              <div className={styles.col6}>Actions</div>
-            </div>
-            {matches.map(match => (
-              <div key={match.id} className={styles.tableRow}>
-                <div className={styles.col1}>{match.league}</div>
-                <div className={styles.col2}>{match.team1}</div>
-                <div className={styles.col3}>{match.team2}</div>
-                <div className={styles.col4}>{match.time}</div>
-                <div className={styles.col5}>
-                  <span className={`${styles.status} ${styles[match.status.toLowerCase()]}`}>
-                    {match.status}
-                  </span>
-                </div>
-                <div className={styles.col5b}>
-                  {match.score1 !== null && match.score2 !== null ? (
-                    <span className={styles.scoreDisplay}>{match.score1} - {match.score2}</span>
-                  ) : (
-                    <span style={{ color: '#aaa' }}>—</span>
-                  )}
-                </div>
-                <div className={styles.col6}>
-                  <button
-                    className={styles.editBtn}
-                    onClick={() => handleEditMatch(match)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className={styles.deleteBtn}
-                    onClick={() => handleDeleteMatch(match.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   )
 }

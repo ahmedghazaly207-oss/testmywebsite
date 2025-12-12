@@ -1,5 +1,12 @@
 // Fonction pour déterminer le statut du match selon l'heure actuelle
-export const getMatchStatus = (matchTime) => {
+// Si le match a un score (score1 et score2), c'est FINISHED
+// Sinon, on calcule basé sur l'heure
+export const getMatchStatus = (matchTime, score1, score2) => {
+  // Si un score existe, c'est FINISHED (peu importe l'heure)
+  if (score1 !== null && score1 !== undefined && score2 !== null && score2 !== undefined) {
+    return 'Finished'
+  }
+
   if (!matchTime) return 'Upcoming'
 
   const now = new Date()

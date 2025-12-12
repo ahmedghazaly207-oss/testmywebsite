@@ -11,6 +11,7 @@ import ContactMessages from './pages/ContactMessages'
 import AdminLogin from './pages/AdminLogin'
 import Admin from './pages/Admin'
 import News from './pages/News'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 import NotFound from './pages/NotFound'
 import './App.css'
 
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/contact-messages" element={<ContactMessages />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/admin-login" element={<AdminLogin />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/match/:id" element={<MatchDetails />} />

@@ -6,6 +6,11 @@ function Footer() {
   const { t } = useLanguage()
   const currentYear = new Date().getFullYear()
 
+  // Fonction pour scroller vers le haut
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
@@ -20,13 +25,10 @@ function Footer() {
           <h4 className={styles.sectionTitle}>{t('quickLinks')}</h4>
           <ul className={styles.linksList}>
             <li>
-              <Link to="/">{t('home')}</Link>
+              <Link to="/" onClick={scrollToTop}>{t('home')}</Link>
             </li>
             <li>
-              <Link to="/">{t('liveMatches')}</Link>
-            </li>
-            <li>
-              <Link to="/">{t('leagues')}</Link>
+              <Link to="/" onClick={scrollToTop}>{t('liveMatches')}</Link>
             </li>
           </ul>
         </div>
@@ -35,13 +37,13 @@ function Footer() {
           <h4 className={styles.sectionTitle}>{t('support')}</h4>
           <ul className={styles.linksList}>
             <li>
-              <Link to="/about">{t('aboutUs')}</Link>
+              <Link to="/about" onClick={scrollToTop}>{t('aboutUs')}</Link>
             </li>
             <li>
-              <Link to="/contact">{t('contact')}</Link>
+              <Link to="/contact" onClick={scrollToTop}>{t('contact')}</Link>
             </li>
             <li>
-              <Link to="/">{t('privacyPolicy')}</Link>
+              <Link to="/privacy-policy" onClick={scrollToTop}>{t('privacyPolicy')}</Link>
             </li>
           </ul>
         </div>

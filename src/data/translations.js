@@ -8,7 +8,7 @@ export const translations = {
 
     // Home page
     liveMatches: 'مباريات اليوم',
-    watchNow: 'شاهد أكثر المباريات الكروية إثارة بث مباشر',
+    watchNow: 'اكتشف تجربة البث المباشر الفريدة على منصة KooraMatchLive! شاهد أفضل المباريات والبطولات العالمية الكبرى - من الدوري الإنجليزي الممتاز وحتى الدوري الإسباني ودوري الأبطال الأوروبي - بجودة عالية وبدون أي تأخير. استمتع أيضاً بمتابعة آخر الأخبار الرياضية، التحليلات، وأهم الأحداث الكروية لحظة بلحظة مع فريقنا المتخصص.',
     league: 'الدوري',
     time: 'الوقت',
     stadium: 'الملعب',
@@ -19,29 +19,29 @@ export const translations = {
     live: 'مباشر',
     upcoming: 'قريب',
     finished: 'انتهى',
-    watchBtn: 'مشاهد المباراة',
-    noMatches: 'لا توجد مباريات في الوقت الحالي',
+    watchBtn: 'شاهد المباراة الآن',
+    noMatches: 'لا توجد مباريات متاحة حالياً - تابع معنا قريباً للمزيد',
 
     // Footer
-    footerDesc: 'وجهتك الأولى لمشاهدة مباريات كرة القدم المباشرة والتحديثات الرياضية',
+    footerDesc: 'KooraMatchLive - أفضل منصة بث مباشر لمباريات كرة القدم | شاهد الدوري الإنجليزي والإسباني والإيطالي ودوري الأبطال والبطولات العالمية بجودة عالية وبدون تأخير',
     quickLinks: 'روابط سريعة',
     leagues: 'الدوريات',
     support: 'الدعم',
     aboutUs: 'عن الموقع',
     privacyPolicy: 'سياسة الخصوصية',
-    footerText: 'KooraLive - البث المباشر الرياضي. جميع الحقوق محفوظة.',
-    contactUs: '⚽ اتصل بنا | KooraLive',
-    welcomeContact: 'أهلا بك في نموذج الاتصال في KooraLive!',
-    contactIntro: 'لأي سؤال أو اقتراح شراكة أو الإبلاغ عن مشكلة تقنية، استخدم النموذج أدناه أو اكتب لنا مباشرة على:',
+    footerText: '© 2024 KooraMatchLive - البث المباشر الرياضي. جميع الحقوق محفوظة.',
+    contactUs: '⚽ اتصل بنا | KooraMatchLive',
+    welcomeContact: 'أهلا وسهلا بك في منصة KooraMatchLive - نموذج الاتصال',
+    contactIntro: 'لأي استفسار أو اقتراح للشراكة أو الإبلاغ عن مشاكل تقنية في منصة KooraMatchLive، يرجى استخدام النموذج أدناه أو التواصل معنا مباشرة على:',
     email: 'البريد الإلكتروني',
     name: 'الاسم',
     requestType: 'نوع الطلب',
     message: 'الرسالة',
     submit: 'إرسال',
     reset: 'إعادة تعيين',
-    successMessage: '✅ تم إرسال رسالتك بنجاح! سنرد عليك قريباً.',
+    successMessage: '✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.',
     errorMessage: 'حدث خطأ. يرجى المحاولة مرة أخرى.',
-    nameRequired: 'الاسم مطلوب (حد أدنى 2 أحرف)',
+    nameRequired: 'الاسم مطلوب (حد أدنى حرفين)',
     emailInvalid: 'البريد الإلكتروني غير صحيح',
     messageRequired: 'الرسالة مطلوبة (حد أدنى 10 أحرف)',
     advertising: 'إعلانات',
@@ -57,7 +57,7 @@ export const translations = {
     copied: 'تم النسخ!',
 
     // Admin
-    adminPanel: 'لوحة التحكم',
+    adminPanel: 'لوحة التحكم الإدارية',
     login: 'دخول',
     logout: 'خروج',
     editMatch: 'تحرير المباراة',
@@ -68,18 +68,15 @@ export const translations = {
     iframeCode: 'كود iFrame',
 
     // News & Events
-    newsAndEvents: 'الأخبار والأحداث',
+    newsAndEvents: 'الأخبار والأحداث الرياضية',
     viewAllArticles: 'عرض جميع المقالات →',
     loading: 'جاري التحميل...',
     readMore: 'اقرأ المزيد →',
     category: 'الفئة',
-    relatedNews: 'أخبار ذات صلة',
+    relatedNews: 'الأخبار ذات الصلة',
     date: 'التاريخ',
-    noNews: 'لا توجد أخبار في الوقت الحالي',
+    noNews: 'لا توجد أخبار متاحة حالياً - تابع معنا للحصول على آخر التحديثات الرياضية',
     newsDetail: 'تفاصيل الخبر',
-
-    // Footer
-    footerText: '© 2024 KooraLive - البث المباشر الرياضي. جميع الحقوق محفوظة.',
   },
   fr: {
     // Header
@@ -90,7 +87,7 @@ export const translations = {
 
     // Home page
     liveMatches: 'Matchs d\'aujourd\'hui',
-    watchNow: 'Regardez les matchs de football les plus palpitants en direct',
+    watchNow: "Découvrez l'expérience unique du streaming sur KooraMatchLive ! Regardez les plus grands matchs et championnats mondiaux - de la Premier League à la Liga et la Ligue des Champions - en haute qualité et sans aucun délai. Profitez aussi des dernières actualités, analyses et des événements footballistiques en temps réel avec notre équipe d'experts.",
     league: 'Ligue',
     time: 'Heure',
     stadium: 'Stade',
@@ -111,9 +108,9 @@ export const translations = {
     support: 'Support',
     aboutUs: 'À propos de nous',
     privacyPolicy: 'Politique de confidentialité',
-    footerText: 'KooraLive - Streaming Sportif. Tous droits réservés.',
-    contactUs: '⚽ Nous contacter | KooraLive',
-    welcomeContact: 'Bienvenue dans le formulaire de contact de KooraLive!',
+    footerText: '© 2024 KooraMatchLive - Streaming Sportif. Tous droits réservés.',
+    contactUs: '⚽ Nous contacter | KooraMatchLive',
+    welcomeContact: 'Bienvenue dans le formulaire de contact de KooraMatchLive!',
     contactIntro: 'Pour toute question, suggestion de partenariat ou signalement de problème technique, utilisez le formulaire ci-dessous ou écrivez-nous directement à:',
     email: 'Email',
     name: 'Nom',
@@ -172,7 +169,7 @@ export const translations = {
 
     // Home page
     liveMatches: 'Today\'s Matches',
-    watchNow: 'Watch the most exciting football matches live',
+    watchNow: "Discover the unique live streaming experience on KooraMatchLive! Watch the biggest matches and world-class tournaments – from the Premier League to La Liga and the Champions League – in high quality and with no delay. Also enjoy the latest football news, analysis, and major events in real time with our expert team.",
     league: 'League',
     time: 'Time',
     stadium: 'Stadium',
@@ -193,9 +190,9 @@ export const translations = {
     support: 'Support',
     aboutUs: 'About Us',
     privacyPolicy: 'Privacy Policy',
-    footerText: 'KooraLive - Sports Streaming. All rights reserved.',
-    contactUs: '⚽ Contact Us | KooraLive',
-    welcomeContact: 'Welcome to KooraLive Contact Form!',
+    footerText: '© 2024 KooraMatchLive - Sports Streaming. All rights reserved.',
+    contactUs: '⚽ Contact Us | KooraMatchLive',
+    welcomeContact: 'Welcome to KooraMatchLive Contact Form!',
     contactIntro: 'For any questions, partnership suggestions, or technical issue reports, use the form below or write us directly at:',
     email: 'Email',
     name: 'Name',

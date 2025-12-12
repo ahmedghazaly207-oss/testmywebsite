@@ -7,9 +7,42 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/?lang=en" />
-    <lastmod>2024-12-11</lastmod>
+    <lastmod>2025-12-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- À propos -->
+  <url>
+    <loc>https://kooramatchlive.com/about</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/about?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/about?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/about?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://kooramatchlive.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/contact?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/contact?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/contact?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Politique de confidentialité -->
+  <url>
+    <loc>https://kooramatchlive.com/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/privacy-policy?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/privacy-policy?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/privacy-policy?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- Pages d'actualités -->
@@ -18,8 +51,8 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/news?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/news?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/news?lang=en" />
-    <lastmod>2024-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
@@ -29,9 +62,9 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/news/1?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/news/1?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/news/1?lang=en" />
-    <lastmod>2024-12-11</lastmod>
+    <lastmod>2025-12-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 
   <url>
@@ -39,9 +72,9 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/news/2?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/news/2?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/news/2?lang=en" />
-    <lastmod>2024-12-11</lastmod>
+    <lastmod>2025-12-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 
   <url>
@@ -49,9 +82,9 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/news/3?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/news/3?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/news/3?lang=en" />
-    <lastmod>2024-12-11</lastmod>
+    <lastmod>2025-12-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 
   <url>
@@ -59,9 +92,9 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/news/4?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/news/4?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/news/4?lang=en" />
-    <lastmod>2024-12-11</lastmod>
+    <lastmod>2025-12-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 
   <url>
@@ -69,9 +102,9 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/news/5?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/news/5?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/news/5?lang=en" />
-    <lastmod>2024-12-11</lastmod>
+    <lastmod>2025-12-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 
   <url>
@@ -79,29 +112,70 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/news/6?lang=ar" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/news/6?lang=fr" />
     <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/news/6?lang=en" />
-    <lastmod>2024-12-11</lastmod>
+    <lastmod>2025-12-12</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Détails des matchs -->
+  <url>
+    <loc>https://kooramatchlive.com/match/1</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/match/1?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/match/1?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/match/1?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Autres pages principales -->
   <url>
-    <loc>https://kooramatchlive.com/about</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/about?lang=ar" />
-    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/about?lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/about?lang=en" />
-    <lastmod>2024-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://kooramatchlive.com/match/2</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/match/2?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/match/2?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/match/2?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://kooramatchlive.com/contact</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/contact?lang=ar" />
-    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/contact?lang=fr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/contact?lang=en" />
-    <lastmod>2024-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://kooramatchlive.com/match/3</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/match/3?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/match/3?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/match/3?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
+
+  <url>
+    <loc>https://kooramatchlive.com/match/4</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/match/4?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/match/4?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/match/4?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://kooramatchlive.com/match/5</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/match/5?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/match/5?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/match/5?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://kooramatchlive.com/match/6</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://kooramatchlive.com/match/6?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://kooramatchlive.com/match/6?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kooramatchlive.com/match/6?lang=en" />
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

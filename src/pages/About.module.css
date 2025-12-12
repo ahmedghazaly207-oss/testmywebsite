@@ -1,24 +1,27 @@
 .aboutPage {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(135deg, #001a4d 0%, #002966 100%);
+  background-color: var(--bg-primary);
   padding: 3rem 1rem;
+  transition: background-color 0.3s ease;
 }
 
 .aboutContainer {
   max-width: 900px;
   margin: 0 auto;
-  background: white;
+  background-color: var(--bg-secondary);
   border-radius: 15px;
   padding: 3rem;
-  box-shadow: 0 10px 40px rgba(0, 26, 77, 0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
 .title {
   font-size: 2.5rem;
-  color: #001a4d;
+  color: var(--text-primary);
   margin-bottom: 2rem;
   text-align: center;
   font-weight: 700;
+  transition: color 0.3s ease;
 }
 
 .section {
@@ -28,9 +31,10 @@
 
 .text {
   font-size: 1.1rem;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   white-space: pre-wrap;
+  transition: color 0.3s ease;
 }
 
 .featuresList {
@@ -41,9 +45,10 @@
 
 .featureItem {
   font-size: 1.05rem;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   padding-left: 0;
+  transition: color 0.3s ease;
 }
 
 .featureItem::before {
@@ -59,7 +64,8 @@
   text-align: center;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 2px solid #e0e0e0;
+  border-top: 2px solid var(--border-color);
+  transition: border-color 0.3s ease;
 }
 
 @media (max-width: 768px) {

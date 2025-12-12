@@ -6,8 +6,9 @@ import styles from './MatchCard.module.css'
 function MatchCard({ match }) {
   const { t, language } = useLanguage()
   
-  // Determine current status based on time
-  const currentStatus = getMatchStatus(match.time)
+  // Determine current status based on time and score
+  // Si un score existe, c'est FINISHED; sinon calcul basé sur l'heure
+  const currentStatus = getMatchStatus(match.time, match.score1, match.score2)
   const isLive = currentStatus === 'LIVE'
   const statusClass = isLive ? styles.statusLive : currentStatus === 'Finished' ? styles.statusFinished : styles.statusUpcoming
   
@@ -21,7 +22,7 @@ function MatchCard({ match }) {
 
   return (
     <Link to={`/match/${match.id}`} className={styles.cardLink}>
-      <div className={styles.card}>
+      <div className={`${styles.card} animate-slideInBottom`}>
         {/* Top Bar: Status - Time - League */}
         <div className={styles.topBar}>
           {/* Status Badge */}
@@ -72,15 +73,17 @@ function MatchCard({ match }) {
             <span className={styles.teamName}>{match.team1}</span>
           </div>
 
-          {/* Score or VS Badge */}
+          {/* Score or VS Badge - Only show score if match is FINISHED and has score */}
           <div className={styles.vsWrapper}>
-            {match.score1 !== null && match.score2 !== null ? (
+            {currentStatus === 'Finished' && match.score1 !== null && match.score2 !== null ? (
+              // Pour FINISHED avec score, afficher le score
               <div className={styles.scoreBox}>
                 <span className={styles.score}>{match.score1}</span>
                 <span className={styles.scoreDash}>-</span>
                 <span className={styles.score}>{match.score2}</span>
               </div>
             ) : (
+              // Pour LIVE, UPCOMING, ou FINISHED sans score → afficher VS
               <div className={styles.vsBadge}>VS</div>
             )}
           </div>

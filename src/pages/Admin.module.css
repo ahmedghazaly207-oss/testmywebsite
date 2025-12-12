@@ -182,14 +182,6 @@
   gap: 0.5rem;
 }
 
-
-  color: #DA2FFF;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
 .backBtn:hover {
   background: linear-gradient(135deg, rgba(65, 105, 225, 0.15), rgba(65, 105, 225, 0.1));
   border-color: rgba(65, 105, 225, 0.5);
