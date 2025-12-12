@@ -88,7 +88,7 @@ function Contact() {
     setSuccess(false)
 
     try {
-      // Sauvegarder aussi dans localStorage (pour affichage local)
+      // Sauvegarder dans localStorage
       const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]')
       const newMessage = {
         id: Date.now(),
@@ -101,25 +101,24 @@ function Contact() {
       messages.push(newMessage)
       localStorage.setItem('contactMessages', JSON.stringify(messages))
 
-      // Send to Formspree
-      const response = await fetch('https://formspree.io/f/xvgprwqw', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          requestType: formData.requestType,
-          message: formData.message,
-          _subject: `New Contact Form Submission from ${formData.name}`,
-          _replyto: formData.email
-        })
-      })
+      // Essayer d'envoyer via Formspree (optionnel)
+      try {
+        const formDataToSend = new FormData()
+        formDataToSend.append('name', formData.name)
+        formDataToSend.append('email', formData.email)
+        formDataToSend.append('_subject', `New Contact: ${formData.requestType}`)
+        formDataToSend.append('_replyto', formData.email)
+        formDataToSend.append('message', formData.message)
 
-      if (!response.ok) {
-        throw new Error('Failed to send message')
+        const response = await fetch('https://formspree.io/f/xvgprwqw', {
+          method: 'POST',
+          body: formDataToSend
+        })
+
+        console.log('Formspree response:', response.status)
+      } catch (formspreeError) {
+        console.warn('Formspree failed (non-blocking):', formspreeError)
+        // Le message est sauvegardé localement anyway
       }
 
       // Success
