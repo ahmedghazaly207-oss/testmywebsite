@@ -75,7 +75,7 @@ function Contact() {
     return Object.keys(newErrors).length === 0
   }
 
-  // Handle form submit
+  // Handle form submit - Using Formspree API
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -88,20 +88,28 @@ function Contact() {
     setSuccess(false)
 
     try {
-      // Save to localStorage (pour tester sans backend PHP)
-      const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]')
-      const newMessage = {
-        id: Date.now(),
-        name: formData.name,
-        email: formData.email,
-        requestType: formData.requestType,
-        message: formData.message,
-        date: new Date().toISOString()
+      // Send to Formspree
+      const response = await fetch('https://formspree.io/f/xvgprwqw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          requestType: formData.requestType,
+          message: formData.message,
+          _subject: `New Contact Form Submission from ${formData.name}`,
+          _replyto: formData.email
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send message')
       }
-      messages.push(newMessage)
-      localStorage.setItem('contactMessages', JSON.stringify(messages))
-      
-      // Simulated success
+
+      // Success
       setSuccess(true)
       setFormData({ name: '', email: '', requestType: '', message: '' })
       setTimeout(() => setSuccess(false), 5000)

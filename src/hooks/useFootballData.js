@@ -1,124 +1,100 @@
-import { useState, useEffect } from 'react'
-import footballDataService from '../services/footballDataService'
+import { useState, useEffect } from 'react';
+import {
+  fetchTodayMatches,
+  fetchLeagueMatches,
+  fetchMatchDetails
+} from '@/services/footballDataService';
 
 /**
- * Hook personnalisé pour récupérer les matchs d'aujourd'hui
- * Récupère automatiquement les matchs EN LIVE et TERMINÉS
+ * Hook pour récupérer les matchs d'aujourd'hui
  */
 export const useTodayMatches = (refreshInterval = 60000) => {
-  const [matches, setMatches] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadMatches = async () => {
       try {
-        setLoading(true)
-        console.log('📡 Chargement des matchs via API...')
-        const data = await footballDataService.fetchTodayMatches()
-        
-        if (data && data.length > 0) {
-          console.log(`✅ ${data.length} matchs reçus`)
-          setMatches(data)
-          setError(null)
-        } else {
-          console.warn('⚠️ Aucun match reçu de l\'API')
-          setError('Aucun match disponible')
-          setMatches([])
-        }
+        setLoading(true);
+        const data = await fetchTodayMatches();
+        setMatches(data);
+        setError(null);
       } catch (err) {
-        console.error('❌ Erreur API:', err.message)
-        setError(err.message)
-        setMatches([])
+        setError(err.message);
+        setMatches([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    loadMatches()
+    loadMatches();
+    const interval = setInterval(loadMatches, refreshInterval);
+    return () => clearInterval(interval);
+  }, [refreshInterval]);
 
-    // Rafraîchir automatiquement tous les X ms (60 secondes par défaut)
-    const interval = setInterval(loadMatches, refreshInterval)
-
-    return () => clearInterval(interval)
-  }, [refreshInterval])
-
-  return { matches, loading, error }
-}
+  return { matches, loading, error };
+};
 
 /**
- * Hook pour récupérer les détails d'un match spécifique
+ * Hook pour récupérer les détails d'un match
  */
 export const useMatchDetails = (matchId) => {
-  const [match, setMatch] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [match, setMatch] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!matchId) return
+    if (!matchId) return;
 
     const loadMatch = async () => {
       try {
-        setLoading(true)
-        const data = await footballDataService.fetchMatchDetails(matchId)
-        
-        if (data) {
-          setMatch(data)
-          setError(null)
-        } else {
-          setError('Impossible de récupérer les détails du match')
-        }
+        setLoading(true);
+        const data = await fetchMatchDetails(matchId);
+        setMatch(data);
+        setError(null);
       } catch (err) {
-        setError(err.message)
-        console.error('Erreur:', err)
+        setError(err.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    loadMatch()
-  }, [matchId])
+    loadMatch();
+  }, [matchId]);
 
-  return { match, loading, error }
-}
+  return { match, loading, error };
+};
 
 /**
- * Hook pour récupérer les matchs d'une ligue spécifique
+ * Hook pour récupérer les matchs d'une ligue
  */
 export const useLeagueMatches = (leagueCode, refreshInterval = 60000) => {
-  const [matches, setMatches] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!leagueCode) return
+    if (!leagueCode) return;
 
     const loadMatches = async () => {
       try {
-        setLoading(true)
-        const data = await footballDataService.fetchLeagueMatches(leagueCode)
-        
-        if (data) {
-          setMatches(data)
-          setError(null)
-        } else {
-          setError('Impossible de récupérer les matchs de la ligue')
-        }
+        setLoading(true);
+        const data = await fetchLeagueMatches(leagueCode);
+        setMatches(data);
+        setError(null);
       } catch (err) {
-        setError(err.message)
-        console.error('Erreur:', err)
+        setError(err.message);
+        setMatches([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    loadMatches()
+    loadMatches();
+    const interval = setInterval(loadMatches, refreshInterval);
+    return () => clearInterval(interval);
+  }, [leagueCode, refreshInterval]);
 
-    // Rafraîchir automatiquement
-    const interval = setInterval(loadMatches, refreshInterval)
-
-    return () => clearInterval(interval)
-  }, [leagueCode, refreshInterval])
-
-  return { matches, loading, error }
-}
+  return { matches, loading, error };
+};
