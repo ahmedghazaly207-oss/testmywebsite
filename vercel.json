@@ -1,4 +1,10 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm ci",
+  "env": {
+    "VITE_FOOTBALL_DATA_KEY": "@VITE_FOOTBALL_DATA_KEY"
+  },
   "rewrites": [
     {
       "source": "/(.*)",
