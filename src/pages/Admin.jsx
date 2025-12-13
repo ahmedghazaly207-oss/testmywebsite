@@ -372,7 +372,7 @@ function Admin() {
   }
 
   if (!isAuthorized) {
-    return <div className={styles.admin}></div> // Return empty while redirecting
+    return null // Return null while checking authorization and redirecting
   }
 
   return (
