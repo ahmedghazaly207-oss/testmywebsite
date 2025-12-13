@@ -56,15 +56,20 @@ function Admin() {
   useEffect(() => {
     const adminSession = localStorage.getItem('adminSession')
     if (!adminSession) {
-      navigate('/admin-login')
+      navigate('/admin-login', { replace: true })
       return
     }
     
-    const session = JSON.parse(adminSession)
-    if (session.isAdmin) {
-      setIsAuthorized(true)
-    } else {
-      navigate('/admin-login')
+    try {
+      const session = JSON.parse(adminSession)
+      if (session && session.isAdmin) {
+        setIsAuthorized(true)
+      } else {
+        navigate('/admin-login', { replace: true })
+      }
+    } catch (e) {
+      console.error('Session error:', e)
+      navigate('/admin-login', { replace: true })
     }
   }, [navigate])
 
@@ -382,8 +387,9 @@ function Admin() {
   if (!isAuthorized) {
     return (
       <div className={styles.admin}>
-        <div style={{ textAlign: 'center', padding: '3rem', color: '#999' }}>
-          <p>Verifying authorization...</p>
+        <div style={{ textAlign: 'center', padding: '5rem 2rem', color: '#999' }}>
+          <h2>Loading Admin Panel...</h2>
+          <p>Redirecting if not authorized...</p>
         </div>
       </div>
     )

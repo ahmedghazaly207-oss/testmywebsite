@@ -22,15 +22,17 @@ function AdminLogin() {
         // Store admin session in localStorage
         localStorage.setItem('adminSession', JSON.stringify({
           isAdmin: true,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          loginTime: new Date().toISOString()
         }))
-        navigate('/admin')
+        // Use replace to prevent back button issues
+        navigate('/admin', { replace: true })
       } else {
         setError('Invalid password. Please try again.')
         setPassword('')
+        setIsLoading(false)
       }
-      setIsLoading(false)
-    }, 500)
+    }, 800)
   }
 
   return (
