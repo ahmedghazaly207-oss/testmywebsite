@@ -133,6 +133,8 @@ function Admin() {
     triggerMatchesUpdate()
     resetForm()
     setShowForm(false)
+    setSuccessMessage('✅ Match added successfully!')
+    setTimeout(() => setSuccessMessage(''), 3000)
   }
 
   // Update existing match
@@ -156,6 +158,8 @@ function Admin() {
     triggerMatchesUpdate()
     resetForm()
     setEditingId(null)
+    setSuccessMessage('✅ Match updated successfully!')
+    setTimeout(() => setSuccessMessage(''), 3000)
   }
 
   // Delete match
@@ -165,6 +169,8 @@ function Admin() {
       setMatches(updated)
       localStorage.setItem('footballMatches', JSON.stringify(updated))
       triggerMatchesUpdate()
+      setSuccessMessage('✅ Match deleted successfully!')
+      setTimeout(() => setSuccessMessage(''), 3000)
     }
   }
 
@@ -337,6 +343,8 @@ function Admin() {
       setNews(updated)
       localStorage.setItem('footballNews', JSON.stringify(updated))
       triggerNewsUpdate()
+      setSuccessMessage('✅ News deleted successfully!')
+      setTimeout(() => setSuccessMessage(''), 3000)
     }
   }
 
