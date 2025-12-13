@@ -380,7 +380,13 @@ function Admin() {
   }
 
   if (!isAuthorized) {
-    return null // Return null while checking authorization and redirecting
+    return (
+      <div className={styles.admin}>
+        <div style={{ textAlign: 'center', padding: '3rem', color: '#999' }}>
+          <p>Verifying authorization...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

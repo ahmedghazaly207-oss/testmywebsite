@@ -29,7 +29,7 @@ export const translations = {
     support: 'الدعم',
     aboutUs: 'عن الموقع',
     privacyPolicy: 'سياسة الخصوصية',
-    footerText: '© 2025 KooraMatchLive - البث المباشر الرياضي. جميع الحقوق محفوظة.',
+    footerText: 'KooraMatchLive - البث المباشر الرياضي. جميع الحقوق محفوظة.',
     contactUs: '⚽ اتصل بنا | KooraMatchLive',
     welcomeContact: 'أهلا وسهلا بك في منصة KooraMatchLive - نموذج الاتصال',
     contactIntro: 'لأي استفسار أو اقتراح للشراكة أو الإبلاغ عن مشاكل تقنية في منصة KooraMatchLive، يرجى استخدام النموذج أدناه أو التواصل معنا مباشرة على:',
@@ -108,7 +108,7 @@ export const translations = {
     support: 'Support',
     aboutUs: 'À propos de nous',
     privacyPolicy: 'Politique de confidentialité',
-    footerText: '© 2025 KooraMatchLive - Streaming Sportif. Tous droits réservés.',
+    footerText: 'KooraMatchLive - Streaming Sportif. Tous droits réservés.',
     contactUs: '⚽ Nous contacter | KooraMatchLive',
     welcomeContact: 'Bienvenue dans le formulaire de contact de KooraMatchLive!',
     contactIntro: 'Pour toute question, suggestion de partenariat ou signalement de problème technique, utilisez le formulaire ci-dessous ou écrivez-nous directement à:',
@@ -158,7 +158,7 @@ export const translations = {
     newsDetail: 'Détails de l\'actualité',
 
     // Footer
-    footerText: '© 2025 KooraLive - Streaming Sportif. Tous droits réservés.',
+    footerText: 'KooraLive - Streaming Sportif. Tous droits réservés.',
   },
   en: {
     // Header
@@ -190,7 +190,7 @@ export const translations = {
     support: 'Support',
     aboutUs: 'About Us',
     privacyPolicy: 'Privacy Policy',
-    footerText: '© 2025 KooraMatchLive - Sports Streaming. All rights reserved.',
+    footerText: 'KooraMatchLive - Sports Streaming. All rights reserved.',
     contactUs: '⚽ Contact Us | KooraMatchLive',
     welcomeContact: 'Welcome to KooraMatchLive Contact Form!',
     contactIntro: 'For any questions, partnership suggestions, or technical issue reports, use the form below or write us directly at:',
@@ -240,6 +240,6 @@ export const translations = {
     newsDetail: 'News Details',
 
     // Footer
-    footerText: '© 2025 KooraLive - Sports Streaming. All rights reserved.',
+    footerText: 'KooraLive - Sports Streaming. All rights reserved.',
   }
 }
