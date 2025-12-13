@@ -9,7 +9,7 @@ function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false)
 
   // Set your admin password here
-  const ADMIN_PASSWORD = 'admin123' // Change this to your desired password
+  const ADMIN_PASSWORD = 'Ahmed@2002@' // Change this to your desired password
 
   const handleLogin = (e) => {
     e.preventDefault()
