@@ -33,14 +33,51 @@
   font-weight: 600;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .languageToggle {
-    padding: 6px 10px;
-    gap: 4px;
+    padding: 6px 12px;
+    gap: 6px;
   }
 
   .langBtn {
-    padding: 5px 10px;
+    padding: 5px 12px;
     font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .languageToggle {
+    padding: 5px 10px;
+    gap: 4px;
+    border-radius: 16px;
+  }
+
+  .langBtn {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .languageToggle {
+    padding: 4px 8px;
+    gap: 3px;
+  }
+
+  .langBtn {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .languageToggle {
+    padding: 3px 6px;
+    gap: 2px;
+  }
+
+  .langBtn {
+    padding: 2px 6px;
+    font-size: 9px;
   }
 }

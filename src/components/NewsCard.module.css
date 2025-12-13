@@ -26,6 +26,30 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
+@media (max-width: 768px) {
+  .imageContainer {
+    height: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  .imageContainer {
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .imageContainer {
+    height: 140px;
+  }
+}
+
+@media (max-width: 360px) {
+  .imageContainer {
+    height: 120px;
+  }
+}
+
 .image {
   width: 100%;
   height: 100%;

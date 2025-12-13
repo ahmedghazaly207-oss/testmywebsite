@@ -44,9 +44,21 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .main-content {
     padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-content {
+    padding: 0.5rem 0.5rem;
   }
 }
 

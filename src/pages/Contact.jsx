@@ -277,7 +277,7 @@ function Contact() {
 
         {/* Footer Text */}
         <div className={styles.footerText}>
-          <p>© 2024 KooraLive - Streaming Sportif. Tous droits réservés.</p>
+          <p>© 2025 KooraLive - Streaming Sportif. Tous droits réservés.</p>
           <p>Temps de réponse moyen: 24-48 heures</p>
         </div>
       </div>

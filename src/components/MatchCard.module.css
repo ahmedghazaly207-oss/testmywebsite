@@ -5,6 +5,30 @@
   height: 300px;
 }
 
+@media (max-width: 768px) {
+  .cardLink {
+    height: 280px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cardLink {
+    height: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardLink {
+    height: 240px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cardLink {
+    height: 220px;
+  }
+}
+
 .card {
   background: linear-gradient(135deg, var(--card-bg) 0%, rgba(25, 25, 25, 0.98) 100%);
   border: 1px solid var(--border-color);

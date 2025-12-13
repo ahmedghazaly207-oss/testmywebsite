@@ -233,8 +233,213 @@ textarea {
 }
 
 @media (max-width: 768px) {
+  .contactPage {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .introSection {
+    padding: 1.2rem;
+  }
+
+  .form {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .formGroup {
+    margin-bottom: 1.5rem;
+  }
+
   .buttonGroup {
     flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  button {
+    padding: 0.8rem 2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .contactPage {
+    padding: 1.25rem 0.5rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .introSection {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-left-width: 3px;
+  }
+
+  .introSection p {
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .emailContact {
+    font-size: 0.9rem;
+  }
+
+  .form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .formGroup {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 1rem;
+    padding: 0.7rem;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  button {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .successMessage,
+  .errorMessage {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+
+  .spinner {
+    width: 14px;
+    height: 14px;
+    margin-right: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contactPage {
+    padding: 1rem 0.5rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .introSection {
+    padding: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .introSection p {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  label {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+
+  textarea {
+    min-height: 100px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
+
+  .successMessage,
+  .errorMessage {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .header h1 {
+    font-size: 1.3rem;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+  }
+
+  .introSection {
+    padding: 0.75rem;
+  }
+
+  .introSection p {
+    font-size: 0.75rem;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .successMessage,
+  .errorMessage {
+    font-size: 0.75rem;
   }
 }
 
