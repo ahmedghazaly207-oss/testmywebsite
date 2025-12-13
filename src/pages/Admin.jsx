@@ -56,15 +56,19 @@ function Admin() {
   useEffect(() => {
     const adminSession = localStorage.getItem('adminSession')
     if (!adminSession) {
+      console.log('No admin session found, redirecting to login')
       navigate('/admin-login', { replace: true })
       return
     }
     
     try {
       const session = JSON.parse(adminSession)
+      console.log('Session parsed:', session)
       if (session && session.isAdmin) {
+        console.log('Authorization successful')
         setIsAuthorized(true)
       } else {
+        console.log('Session not admin, redirecting')
         navigate('/admin-login', { replace: true })
       }
     } catch (e) {
@@ -381,15 +385,18 @@ function Admin() {
   // Logout admin
   const handleLogout = () => {
     localStorage.removeItem('adminSession')
-    navigate('/')
+    navigate('/admin-login', { replace: true })
   }
 
   if (!isAuthorized) {
     return (
       <div className={styles.admin}>
         <div style={{ textAlign: 'center', padding: '5rem 2rem', color: '#999' }}>
-          <h2>Loading Admin Panel...</h2>
-          <p>Redirecting if not authorized...</p>
+          <h2>🔐 Verifying Authorization...</h2>
+          <p>Please wait while we verify your credentials.</p>
+          <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#666' }}>
+            If you see this screen for more than 3 seconds, please <a href="/admin-login" style={{ color: '#4169e1' }}>go back to login</a>
+          </p>
         </div>
       </div>
     )
