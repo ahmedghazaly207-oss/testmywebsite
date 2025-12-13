@@ -22,6 +22,7 @@ function Admin() {
   const [editingId, setEditingId] = useState(null)
   const [showForm, setShowForm] = useState(false)
   const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   
   // Form data for matches
   const [formData, setFormData] = useState({
@@ -54,27 +55,39 @@ function Admin() {
 
   // Check admin session on mount
   useEffect(() => {
-    const adminSession = localStorage.getItem('adminSession')
-    if (!adminSession) {
-      console.log('No admin session found, redirecting to login')
-      navigate('/admin-login', { replace: true })
-      return
+    const checkAuthorization = () => {
+      try {
+        const adminSession = localStorage.getItem('adminSession')
+        console.log('Checking authorization, session:', adminSession)
+        
+        if (!adminSession) {
+          console.log('No admin session found, redirecting to login')
+          setIsCheckingAuth(false)
+          navigate('/admin-login', { replace: true })
+          return
+        }
+        
+        const session = JSON.parse(adminSession)
+        console.log('Session parsed:', session)
+        
+        if (session && session.isAdmin === true) {
+          console.log('Authorization successful, setting authorized')
+          setIsAuthorized(true)
+        } else {
+          console.log('Session not admin, redirecting')
+          navigate('/admin-login', { replace: true })
+        }
+      } catch (e) {
+        console.error('Session parse error:', e)
+        navigate('/admin-login', { replace: true })
+      } finally {
+        setIsCheckingAuth(false)
+      }
     }
     
-    try {
-      const session = JSON.parse(adminSession)
-      console.log('Session parsed:', session)
-      if (session && session.isAdmin) {
-        console.log('Authorization successful')
-        setIsAuthorized(true)
-      } else {
-        console.log('Session not admin, redirecting')
-        navigate('/admin-login', { replace: true })
-      }
-    } catch (e) {
-      console.error('Session error:', e)
-      navigate('/admin-login', { replace: true })
-    }
+    // Small delay to ensure mount is complete
+    const timer = setTimeout(checkAuthorization, 50)
+    return () => clearTimeout(timer)
   }, [navigate])
 
   // Load matches from localStorage
@@ -404,23 +417,52 @@ function Admin() {
 
   return (
     <div className={styles.admin}>
-      <div className={styles.adminHeader}>
-        <h1>⚙️ Administration</h1>
-        <div className={styles.headerButtons}>
-          <button 
-            className={styles.logoutBtn}
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-          <button 
-            className={styles.backBtn}
-            onClick={() => navigate('/')}
-          >
-            ← Back to Home
-          </button>
+      {isCheckingAuth ? (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          fontSize: '1.2rem',
+          color: '#0066cc'
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <p>Verifying authorization...</p>
+            <p style={{ fontSize: '0.9rem', marginTop: '1rem', color: '#666' }}>Please wait while we verify your session.</p>
+          </div>
         </div>
-      </div>
+      ) : !isAuthorized ? (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          fontSize: '1.1rem',
+          color: '#dc3545'
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <p>Not authorized. Redirecting to login...</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className={styles.adminHeader}>
+            <h1>⚙️ Administration</h1>
+            <div className={styles.headerButtons}>
+              <button 
+                className={styles.logoutBtn}
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+              <button 
+                className={styles.backBtn}
+                onClick={() => navigate('/')}
+              >
+                ← Back to Home
+              </button>
+            </div>
+          </div>
 
       {/* Tabs */}
       <div className={styles.tabs}>
