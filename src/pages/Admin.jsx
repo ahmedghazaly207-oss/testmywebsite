@@ -401,12 +401,26 @@ function Admin() {
     navigate('/admin-login', { replace: true })
   }
 
+  if (isCheckingAuth) {
+    return (
+      <div className={styles.admin}>
+        <div style={{ textAlign: 'center', padding: '5rem 2rem', color: '#0066cc', fontSize: '1.2rem' }}>
+          <h2>⏳ Verifying Authorization...</h2>
+          <p>Please wait while we verify your session.</p>
+          <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#666' }}>
+            This usually takes a second or two.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   if (!isAuthorized) {
     return (
       <div className={styles.admin}>
         <div style={{ textAlign: 'center', padding: '5rem 2rem', color: '#999' }}>
-          <h2>🔐 Verifying Authorization...</h2>
-          <p>Please wait while we verify your credentials.</p>
+          <h2>🔐 Not Authorized</h2>
+          <p>Redirecting to login...</p>
           <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#666' }}>
             If you see this screen for more than 3 seconds, please <a href="/admin-login" style={{ color: '#4169e1' }}>go back to login</a>
           </p>
@@ -417,52 +431,23 @@ function Admin() {
 
   return (
     <div className={styles.admin}>
-      {isCheckingAuth ? (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          fontSize: '1.2rem',
-          color: '#0066cc'
-        }}>
-          <div style={{ textAlign: 'center' }}>
-            <p>Verifying authorization...</p>
-            <p style={{ fontSize: '0.9rem', marginTop: '1rem', color: '#666' }}>Please wait while we verify your session.</p>
-          </div>
+      <div className={styles.adminHeader}>
+        <h1>⚙️ Administration</h1>
+        <div className={styles.headerButtons}>
+          <button 
+            className={styles.logoutBtn}
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+          <button 
+            className={styles.backBtn}
+            onClick={() => navigate('/')}
+          >
+            ← Back to Home
+          </button>
         </div>
-      ) : !isAuthorized ? (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          fontSize: '1.1rem',
-          color: '#dc3545'
-        }}>
-          <div style={{ textAlign: 'center' }}>
-            <p>Not authorized. Redirecting to login...</p>
-          </div>
-        </div>
-      ) : (
-        <>
-          <div className={styles.adminHeader}>
-            <h1>⚙️ Administration</h1>
-            <div className={styles.headerButtons}>
-              <button 
-                className={styles.logoutBtn}
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-              <button 
-                className={styles.backBtn}
-                onClick={() => navigate('/')}
-              >
-                ← Back to Home
-              </button>
-            </div>
-          </div>
+      </div>
 
       {/* Tabs */}
       <div className={styles.tabs}>
