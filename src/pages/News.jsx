@@ -174,27 +174,9 @@ function News() {
             {/* Contenu principal */}
             <div className={styles.articleContent}>
               <p>{getTranslation(news.content)}</p>
-              <p className={styles.contentParagraph}>
-                {language === 'ar' 
-                  ? 'هذا الحدث يمثل لحظة تاريخية مهمة في عالم كرة القدم. يتابع ملايين المشجعين حول العالم كل التفاصيل والتطورات الجديدة...'
-                  : language === 'fr'
-                  ? 'Cet événement représente un moment historique important dans le monde du football. Des millions de fans à travers le monde suivent chaque détail et évolution...'
-                  : 'This event represents an important historic moment in the world of football. Millions of fans around the world follow every detail and development...'}
-              </p>
             </div>
 
-            {/* Share buttons */}
-            <div className={styles.shareSection}>
-              <p>{language === 'ar' ? 'شارك هذا الخبر:' : language === 'fr' ? 'Partager cet article:' : 'Share this article:'}</p>
-              <div className={styles.shareButtons}>
-                <a href={`https://www.facebook.com/sharer/sharer.php?u=${seoUrl}`} target="_blank" rel="noopener noreferrer" className={styles.shareBtn}>
-                  📘 Facebook
-                </a>
-                <a href={`https://twitter.com/intent/tweet?url=${seoUrl}&text=${getTranslation(news.title)}`} target="_blank" rel="noopener noreferrer" className={styles.shareBtn}>
-                  𝕏 Twitter
-                </a>
-              </div>
-            </div>
+
           </div>
         </article>
 
