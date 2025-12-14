@@ -8,17 +8,19 @@ function AdminLogin() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // Admin password - uses ENV variable or fallback
-  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Ahmed@2002@'
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
-    // Simple timeout to simulate processing
-    setTimeout(() => {
-      if (password === ADMIN_PASSWORD) {
+    try {
+      const res = await fetch('/api/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      })
+
+      if (res.ok) {
         // Store admin session in localStorage
         localStorage.setItem('adminSession', JSON.stringify({
           isAdmin: true,
@@ -32,7 +34,11 @@ function AdminLogin() {
         setPassword('')
         setIsLoading(false)
       }
-    }, 800)
+    } catch (err) {
+      setError('Connection error. Please try again.')
+      setPassword('')
+      setIsLoading(false)
+    }
   }
 
   return (
