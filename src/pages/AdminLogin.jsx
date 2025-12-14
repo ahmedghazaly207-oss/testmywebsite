@@ -1,45 +1,63 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './AdminLogin.module.css'
 
 function AdminLogin() {
   const navigate = useNavigate()
+
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // Set your admin password here
-  const ADMIN_PASSWORD = 'Ahmed@2002@' // Change this to your desired password
+  // ✅ ADMIN PASSWORD via ENV (IMPORTANT)
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
+
+  // ✅ Si déjà connecté → rediriger vers /admin
+  useEffect(() => {
+    const session = localStorage.getItem('adminSession')
+    if (session) {
+      const parsed = JSON.parse(session)
+      if (parsed?.isAdmin) {
+        navigate('/admin', { replace: true })
+      }
+    }
+  }, [navigate])
 
   const handleLogin = (e) => {
     e.preventDefault()
-    setIsLoading(true)
     setError('')
+    setIsLoading(true)
 
-    // Simulate a small delay for security feel
-    setTimeout(() => {
-      if (password === ADMIN_PASSWORD) {
-        // Store admin session in localStorage
-        localStorage.setItem('adminSession', JSON.stringify({
+    if (!ADMIN_PASSWORD) {
+      setError('Admin password not configured')
+      setIsLoading(false)
+      return
+    }
+
+    if (password === ADMIN_PASSWORD) {
+      localStorage.setItem(
+        'adminSession',
+        JSON.stringify({
           isAdmin: true,
-          timestamp: Date.now(),
           loginTime: new Date().toISOString()
-        }))
-        // Use replace to prevent back button issues
-        navigate('/admin', { replace: true })
-      } else {
-        setError('Invalid password. Please try again.')
-        setPassword('')
-        setIsLoading(false)
-      }
-    }, 800)
+        })
+      )
+
+      navigate('/admin', { replace: true })
+    } else {
+      setError('Invalid password')
+      setPassword('')
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginBox}>
         <h1 className={styles.title}>⚙️ Admin Login</h1>
-        <p className={styles.subtitle}>Enter your password to manage matches</p>
+        <p className={styles.subtitle}>
+          Enter your password to access the admin panel
+        </p>
 
         <form onSubmit={handleLogin} className={styles.form}>
           <div className={styles.formGroup}>
@@ -52,6 +70,7 @@ function AdminLogin() {
               placeholder="Enter admin password"
               disabled={isLoading}
               className={error ? styles.inputError : ''}
+              required
             />
           </div>
 
@@ -62,14 +81,17 @@ function AdminLogin() {
             className={styles.submitBtn}
             disabled={isLoading}
           >
-            {isLoading ? 'Verifying...' : 'Login to Admin Panel'}
+            {isLoading ? 'Verifying…' : 'Login'}
           </button>
         </form>
 
         <div className={styles.footer}>
-          <a href="/" className={styles.backLink}>
+          <button
+            className={styles.backLink}
+            onClick={() => navigate('/')}
+          >
             ← Back to Home
-          </a>
+          </button>
         </div>
       </div>
     </div>
