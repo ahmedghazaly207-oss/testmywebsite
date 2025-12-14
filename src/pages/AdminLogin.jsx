@@ -8,31 +8,29 @@ function AdminLogin() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // Set your admin password here
-  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Ahmed@2002@'
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
-    // Simulate a small delay for security feel
-    setTimeout(() => {
-      if (password === ADMIN_PASSWORD) {
-        // Store admin session in localStorage
-        localStorage.setItem('adminSession', JSON.stringify({
-          isAdmin: true,
-          timestamp: Date.now(),
-          loginTime: new Date().toISOString()
-        }))
-        // Use replace to prevent back button issues
-        navigate('/admin', { replace: true })
-      } else {
-        setError('Invalid password. Please try again.')
-        setPassword('')
-        setIsLoading(false)
-      }
-    }, 800)
+    try {
+      const res = await fetch('/api/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      })
+
+      if (!res.ok) throw new Error()
+
+      // session admin
+      localStorage.setItem('adminSession', 'true')
+      navigate('/admin', { replace: true })
+
+    } catch {
+      setError('Invalid password')
+      setPassword('')
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -49,27 +47,19 @@ function AdminLogin() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter admin password"
               disabled={isLoading}
-              className={error ? styles.inputError : ''}
             />
           </div>
 
           {error && <div className={styles.error}>{error}</div>}
 
-          <button
-            type="submit"
-            className={styles.submitBtn}
-            disabled={isLoading}
-          >
+          <button type="submit" disabled={isLoading}>
             {isLoading ? 'Verifying...' : 'Login to Admin Panel'}
           </button>
         </form>
 
         <div className={styles.footer}>
-          <a href="/" className={styles.backLink}>
-            ← Back to Home
-          </a>
+          <a href="/">← Back to Home</a>
         </div>
       </div>
     </div>
