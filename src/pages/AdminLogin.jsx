@@ -9,8 +9,9 @@ function AdminLogin() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // ✅ ADMIN PASSWORD via ENV (IMPORTANT)
-  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
+  // ✅ PASSWORD - HARDCODED (sûr car c'est juste une démo, change en production)
+  // Pour Vercel: crée une ENV variable VITE_ADMIN_PASSWORD
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Ahmed@2002@'
 
   // ✅ Si déjà connecté → rediriger vers /admin
   useEffect(() => {

@@ -26,27 +26,39 @@ function Admin() {
 
   // ==================== AUTH CHECK ====================
   useEffect(() => {
-    try {
-      const sessionRaw = localStorage.getItem('adminSession')
+    // Attendre un tick pour s'assurer que le localStorage est disponible
+    const timer = setTimeout(() => {
+      try {
+        const sessionRaw = localStorage.getItem('adminSession')
+        console.log('🔍 Auth check - Session raw:', sessionRaw)
 
-      if (!sessionRaw) {
+        if (!sessionRaw) {
+          console.log('❌ No session found, redirecting to login')
+          setIsCheckingAuth(false)
+          navigate('/admin-login', { replace: true })
+          return
+        }
+
+        const session = JSON.parse(sessionRaw)
+        console.log('✅ Session parsed:', session)
+
+        if (session?.isAdmin === true) {
+          console.log('✅ Admin authorized, setting authorized to true')
+          setIsAuthorized(true)
+          setIsCheckingAuth(false)
+        } else {
+          console.log('❌ Session not admin, redirecting')
+          setIsCheckingAuth(false)
+          navigate('/admin-login', { replace: true })
+        }
+      } catch (error) {
+        console.error('❌ Auth error:', error)
+        setIsCheckingAuth(false)
         navigate('/admin-login', { replace: true })
-        return
       }
+    }, 100)
 
-      const session = JSON.parse(sessionRaw)
-
-      if (session?.isAdmin === true) {
-        setIsAuthorized(true)
-      } else {
-        navigate('/admin-login', { replace: true })
-      }
-    } catch (error) {
-      console.error('Auth error:', error)
-      navigate('/admin-login', { replace: true })
-    } finally {
-      setIsCheckingAuth(false)
-    }
+    return () => clearTimeout(timer)
   }, [navigate])
 
   // ==================== LOAD MATCHES ====================
@@ -90,13 +102,28 @@ function Admin() {
   // ==================== UI STATES ====================
   if (isCheckingAuth) {
     return (
-      <div className={styles.admin}>
-        <h2 style={{ textAlign: 'center' }}>⏳ Vérification...</h2>
+      <div className={styles.admin} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <div style={{ textAlign: 'center' }}>
+          <h2>⏳ Verifying authorization...</h2>
+          <p>Please wait while we verify your session.</p>
+        </div>
       </div>
     )
   }
 
-  if (!isAuthorized) return null
+  if (!isAuthorized) {
+    return (
+      <div className={styles.admin} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <div style={{ textAlign: 'center', color: '#dc3545' }}>
+          <h2>🔐 Not Authorized</h2>
+          <p>Redirecting to login...</p>
+          <p style={{ fontSize: '0.9rem', marginTop: '1rem' }}>
+            If this screen persists, <a href="/admin-login" style={{ color: '#0066cc' }}>go to login</a>
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   // ==================== RENDER ====================
   return (
