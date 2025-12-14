@@ -8,29 +8,31 @@ function AdminLogin() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleLogin = async (e) => {
+  // Admin password - uses ENV variable or fallback
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Ahmed@2002@'
+
+  const handleLogin = (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
-    try {
-      const res = await fetch('/api/admin-login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password })
-      })
-
-      if (!res.ok) throw new Error()
-
-      // session admin
-      localStorage.setItem('adminSession', 'true')
-      navigate('/admin', { replace: true })
-
-    } catch {
-      setError('Invalid password')
-      setPassword('')
-      setIsLoading(false)
-    }
+    // Simple timeout to simulate processing
+    setTimeout(() => {
+      if (password === ADMIN_PASSWORD) {
+        // Store admin session in localStorage
+        localStorage.setItem('adminSession', JSON.stringify({
+          isAdmin: true,
+          timestamp: Date.now(),
+          loginTime: new Date().toISOString()
+        }))
+        // Use replace to prevent back button issues
+        navigate('/admin', { replace: true })
+      } else {
+        setError('Invalid password. Please try again.')
+        setPassword('')
+        setIsLoading(false)
+      }
+    }, 800)
   }
 
   return (
