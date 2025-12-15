@@ -65,90 +65,6 @@
   border-bottom-color: var(--primary-color, #ff6b00);
 }
 
-/* Form Section */
-.formSection {
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  margin-bottom: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-}
-
-.formSection h2 {
-  color: var(--primary-color, #ff6b00);
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-}
-
-.form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-}
-
-.form input,
-.form textarea,
-.form select {
-  padding: 12px 15px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
-  transition: all 0.3s ease;
-}
-
-.form input:focus,
-.form textarea:focus,
-.form select:focus {
-  outline: none;
-  border-color: var(--primary-color, #ff6b00);
-  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
-}
-
-.form textarea {
-  grid-column: 1 / -1;
-  resize: vertical;
-  min-height: 100px;
-}
-
-.formButtons {
-  grid-column: 1 / -1;
-  display: flex;
-  gap: 10px;
-  justify-content: flex-start;
-}
-
-.saveBtn,
-.cancelBtn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.saveBtn {
-  background: var(--primary-color, #ff6b00);
-  color: white;
-}
-
-.saveBtn:hover {
-  background: #e55a00;
-  transform: translateY(-2px);
-}
-
-.cancelBtn {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-.cancelBtn:hover {
-  background: #d1d5db;
-}
-
 /* Data Section */
 .dataSection {
   margin-bottom: 40px;
@@ -160,14 +76,8 @@
   font-size: 1.5rem;
 }
 
-/* Matches Grid */
-.matchesGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-/* News Grid */
+/* Grids */
+.matchesGrid,
 .newsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -233,6 +143,285 @@
   background: #991b1b;
   transform: scale(1.05);
 }
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  color: var(--primary-color, #ff6b00);
+  font-size: 1.3rem;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.closeBtn:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* Edit Form */
+.editForm {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Logos Section */
+.logosSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.logoField {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.logoField label {
+  font-weight: bold;
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+.logoPreview {
+  width: 100%;
+  height: 120px;
+  background: white;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logoPreview img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.noLogo {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.logoField input {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* Score Section */
+.scoreSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.scoreSection .formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scoreSection label {
+  font-weight: bold;
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+.scoreSection input {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Form Groups */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: #111827;
+}
+
+.formGroup input,
+.formGroup select {
+  padding: 12px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--primary-color, #ff6b00);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
+}
+
+/* Modal Buttons */
+.modalButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.saveBtn,
+.cancelBtn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.saveBtn {
+  background: var(--primary-color, #ff6b00);
+  color: white;
+}
+
+.saveBtn:hover {
+  background: #e55a00;
+  transform: translateY(-2px);
+}
+
+.cancelBtn {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.cancelBtn:hover {
+  background: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .adminContainer {
+    padding: 15px;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .adminHeader h1 {
+    font-size: 1.8rem;
+  }
+
+  .matchesGrid,
+  .newsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .logosSection {
+    grid-template-columns: 1fr;
+  }
+
+  .scoreSection {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    padding: 10px;
+  }
+
+  .modalContent {
+    max-height: 95vh;
+  }
+
+  .editForm {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .tab {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  .matchesGrid,
+  .newsGrid {
+    gap: 15px;
+  }
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
