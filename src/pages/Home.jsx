@@ -18,9 +18,17 @@ function Home() {
   // Fonction pour charger les matchs
   const loadMatches = () => {
     try {
-      // Charger les matchs depuis localStorage ou utiliser les données par défaut
-      const stored = localStorage.getItem('footballMatches')
-      const defaultMatches = stored ? JSON.parse(stored) : matchesData
+      // Charger les matchs depuis le nouveau système admin localStorage
+      const stored = localStorage.getItem('matches')
+      let defaultMatches = matchesData
+      
+      if (stored) {
+        try {
+          defaultMatches = JSON.parse(stored)
+        } catch (e) {
+          console.error('Error parsing stored matches:', e)
+        }
+      }
       
       // Vérifier que defaultMatches est un array
       if (!Array.isArray(defaultMatches)) {
@@ -32,7 +40,7 @@ function Home() {
           const statusA = getMatchStatus(a.time, a.score1, a.score2)
           const statusB = getMatchStatus(b.time, b.score1, b.score2)
           
-          const statusOrder = { 'LIVE': 0, 'Upcoming': 1, 'Finished': 2 }
+          const statusOrder = { 'LIVE': 0, 'Live': 0, 'Upcoming': 1, 'Finished': 2 }
           const orderA = statusOrder[statusA] ?? 2
           const orderB = statusOrder[statusB] ?? 2
           
@@ -40,7 +48,7 @@ function Home() {
             return orderA - orderB
           }
           
-          if (statusA === 'Upcoming' && statusB === 'Upcoming') {
+          if ((statusA === 'Upcoming' || statusA === 'upcoming') && (statusB === 'Upcoming' || statusB === 'upcoming')) {
             const timeA = a.time ? parseInt(a.time.replace(':', '')) : 9999
             const timeB = b.time ? parseInt(b.time.replace(':', '')) : 9999
             return timeA - timeB
@@ -60,7 +68,8 @@ function Home() {
   // Fonction pour charger les news
   const loadNews = () => {
     try {
-      const storedNews = localStorage.getItem('footballNews')
+      // Charger les news du nouveau système admin
+      const storedNews = localStorage.getItem('news')
       if (storedNews) {
         const adminNews = JSON.parse(storedNews)
         if (Array.isArray(adminNews)) {

@@ -16,6 +16,8 @@ function AdminNew() {
     league: '',
     team1: '',
     team2: '',
+    team1Logo: '',
+    team2Logo: '',
     time: '',
     status: 'Upcoming',
     iframeLink: '',
@@ -118,6 +120,8 @@ function AdminNew() {
       league: match.league || '',
       team1: match.team1 || '',
       team2: match.team2 || '',
+      team1Logo: match.team1Logo || '',
+      team2Logo: match.team2Logo || '',
       time: match.time || '',
       status: match.status || 'Upcoming',
       iframeLink: match.iframeLink || '',
@@ -143,6 +147,8 @@ function AdminNew() {
       league: '',
       team1: '',
       team2: '',
+      team1Logo: '',
+      team2Logo: '',
       time: '',
       status: 'Upcoming',
       iframeLink: '',
@@ -293,10 +299,16 @@ function AdminNew() {
                 onChange={(e) => setMatchForm({...matchForm, team2: e.target.value})}
               />
               <input
-                type="time"
-                placeholder="Heure du match"
-                value={matchForm.time}
-                onChange={(e) => setMatchForm({...matchForm, time: e.target.value})}
+                type="url"
+                placeholder="Logo Équipe 1"
+                value={matchForm.team1Logo}
+                onChange={(e) => setMatchForm({...matchForm, team1Logo: e.target.value})}
+              />
+              <input
+                type="url"
+                placeholder="Logo Équipe 2"
+                value={matchForm.team2Logo}
+                onChange={(e) => setMatchForm({...matchForm, team2Logo: e.target.value})}
               />
               <select
                 value={matchForm.status}
