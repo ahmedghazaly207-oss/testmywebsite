@@ -365,25 +365,45 @@ function AdminNew() {
                   <div key={match.id} className={`${styles.card} ${styles.matchCard}`}>
                     <div className={styles.matchCardHeader}>
                       <div className={styles.matchTeams}>
-                        {match.team1} <br /> vs <br /> {match.team2}
-                      </div>
-                      <div className={styles.matchMeta}>
-                        <span>🏆 {match.league}</span>
-                        <span>⏰ {match.time || 'TBA'}</span>
+                        <div className={styles.teamSection}>
+                          <div className={styles.teamLogo}>
+                            {match.team1Logo ? (
+                              <img src={match.team1Logo} alt={match.team1} />
+                            ) : (
+                              <div className={styles.logoFallback}>
+                                {match.team1.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                          <span className={styles.teamName}>{match.team1}</span>
+                        </div>
+                        
+                        <div className={styles.vs}>VS</div>
+                        
+                        <div className={styles.teamSection}>
+                          <div className={styles.teamLogo}>
+                            {match.team2Logo ? (
+                              <img src={match.team2Logo} alt={match.team2} />
+                            ) : (
+                              <div className={styles.logoFallback}>
+                                {match.team2.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                          <span className={styles.teamName}>{match.team2}</span>
+                        </div>
                       </div>
                     </div>
                     
                     <div className={styles.matchCardBody}>
-                      <div className={styles.matchInfo}>
-                        <p>
-                          <span className={styles.badge}>{match.status}</span>
-                        </p>
-                        {match.iframeLink && (
-                          <p>📺 <strong>Iframe Stream</strong></p>
-                        )}
-                        {match.videoUrl && (
-                          <p>🎥 <strong>YouTube</strong></p>
-                        )}
+                      <div className={styles.matchMeta}>
+                        <span className={styles.league}>🏆 {match.league}</span>
+                        <span className={styles.status}>{match.status}</span>
+                        {match.time && <span className={styles.time}>⏰ {match.time}</span>}
+                      </div>
+                      <div className={styles.streamInfo}>
+                        {match.iframeLink && <p>📺 Iframe Stream</p>}
+                        {match.videoUrl && <p>🎥 YouTube</p>}
                       </div>
                     </div>
 
