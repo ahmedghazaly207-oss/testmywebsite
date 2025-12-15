@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useDataUpdate } from '../context/DataUpdateContext'
@@ -16,7 +16,7 @@ function Home() {
   const matchesSectionRef = useRef(null)
 
   // Fonction pour charger les matchs
-  const loadMatches = () => {
+  const loadMatches = useCallback(() => {
     try {
       // Charger les matchs depuis le nouveau système admin localStorage
       const stored = localStorage.getItem('matches')
@@ -24,7 +24,10 @@ function Home() {
       
       if (stored) {
         try {
-          defaultMatches = JSON.parse(stored)
+          const parsed = JSON.parse(stored)
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            defaultMatches = parsed
+          }
         } catch (e) {
           console.error('Error parsing stored matches:', e)
         }
@@ -63,10 +66,10 @@ function Home() {
       console.error('Error loading matches:', error)
       setMatches([])
     }
-  }
+  }, [])
 
   // Fonction pour charger les news
-  const loadNews = () => {
+  const loadNews = useCallback(() => {
     try {
       // Charger les news du nouveau système admin
       const storedNews = localStorage.getItem('news')
@@ -80,22 +83,22 @@ function Home() {
       console.error('Error loading news:', error)
       setNews([])
     }
-  }
+  }, [])
 
   // Charger au mount
   useEffect(() => {
     loadMatches()
     loadNews()
-  }, [])
+  }, [loadMatches, loadNews])
 
   // Recharger quand les données sont mises à jour depuis Admin
   useEffect(() => {
     loadMatches()
-  }, [matchesUpdate])
+  }, [matchesUpdate, loadMatches])
 
   useEffect(() => {
     loadNews()
-  }, [newsUpdate])
+  }, [newsUpdate, loadNews])
 
   // Fonction pour scroller vers les matchs
   const scrollToMatches = () => {
