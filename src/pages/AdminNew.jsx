@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDataUpdate } from '../context/DataUpdateContext'
+import MatchCard from '../components/MatchCard'
+import NewsCard from '../components/NewsCard'
 import styles from './AdminNew.module.css'
 
 export default function AdminNew() {
@@ -284,35 +286,8 @@ export default function AdminNew() {
         {tab === 'matches' ? (
           <div className={styles.matchesGrid}>
             {matches.map((match) => (
-              <div key={match.id} className={styles.matchCardWrapper}>
-                <div className={styles.matchCard}>
-                  <div className={styles.matchHeader}>
-                    <span className={styles.league}>{match.league}</span>
-                    <span className={`${styles.status} ${styles[match.status]}`}>
-                      {match.status === 'live' ? '🔴 Live' : match.status === 'finished' ? '✓ Terminé' : '⏱️ À venir'}
-                    </span>
-                  </div>
-
-                  <div className={styles.matchBody}>
-                    <div className={styles.team}>
-                      {match.team1Logo && <img src={match.team1Logo} alt={match.team1} />}
-                      <span>{match.team1}</span>
-                    </div>
-                    <div className={styles.vs}>
-                      <div>{match.time}</div>
-                    </div>
-                    <div className={styles.team}>
-                      <span>{match.team2}</span>
-                      {match.team2Logo && <img src={match.team2Logo} alt={match.team2} />}
-                    </div>
-                  </div>
-
-                  <div className={styles.matchFooter}>
-                    {match.iframeLink && <span>🎥 Lien iframe</span>}
-                    {match.videoUrl && <span>▶️ YouTube</span>}
-                  </div>
-                </div>
-
+              <div key={match.id} className={styles.cardWrapper}>
+                <MatchCard match={match} />
                 {/* Actions overlay */}
                 <div className={styles.cardActions}>
                   <button 
@@ -334,21 +309,15 @@ export default function AdminNew() {
         ) : (
           <div className={styles.newsGrid}>
             {news.map((item) => (
-              <div key={item.id} className={styles.newsCardWrapper}>
-                <div className={styles.newsCard}>
-                  {item.image && (
-                    <div className={styles.newsImage}>
-                      <img src={item.image} alt={item.title} />
-                    </div>
-                  )}
-                  <div className={styles.newsContent}>
-                    <h3>{item.title}</h3>
-                    {item.subtitle && <p className={styles.subtitle}>{item.subtitle}</p>}
-                    <p className={styles.excerpt}>{item.content?.substring(0, 100)}...</p>
-                    <span className={styles.category}>{item.category}</span>
-                  </div>
-                </div>
-
+              <div key={item.id} className={styles.cardWrapper}>
+                <NewsCard
+                  id={item.id}
+                  title={item.title}
+                  image={item.image}
+                  subtitle={item.subtitle}
+                  category={item.category}
+                  date={item.date}
+                />
                 {/* Actions overlay */}
                 <div className={styles.cardActions}>
                   <button 
