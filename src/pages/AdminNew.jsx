@@ -1,553 +1,374 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styles from './AdminNew.module.css'
 import { useDataUpdate } from '../context/DataUpdateContext'
+import styles from './AdminNew.module.css'
 
-function AdminNew() {
+export default function AdminNew() {
   const navigate = useNavigate()
-  const [isAuthorized, setIsAuthorized] = useState(false)
-  const [activeTab, setActiveTab] = useState('matches')
-  const { triggerNewsUpdate, triggerMatchesUpdate } = useDataUpdate()
-
-  // Matches state
+  const { triggerUpdate } = useDataUpdate()
+  const [tab, setTab] = useState('matches')
   const [matches, setMatches] = useState([])
-  const [editingMatchId, setEditingMatchId] = useState(null)
-  const [matchForm, setMatchForm] = useState({
-    league: '',
-    team1: '',
-    team2: '',
-    team1Logo: '',
-    team2Logo: '',
-    time: '',
-    status: 'Upcoming',
-    iframeLink: '',
-    videoUrl: ''
-  })
-
-  // News state
   const [news, setNews] = useState([])
-  const [editingNewsId, setEditingNewsId] = useState(null)
-  const [newsForm, setNewsForm] = useState({
-    title: '',
-    subtitle: '',
-    content: '',
-    image: '',
-    category: ''
-  })
+  const [editingId, setEditingId] = useState(null)
+  const [formData, setFormData] = useState({})
 
-  // Check authorization
+  // Vérifier l'authentification
   useEffect(() => {
-    const adminSession = localStorage.getItem('adminSession')
-    if (!adminSession) {
-      navigate('/admin-login', { replace: true })
-      return
-    }
-    
-    try {
-      const session = JSON.parse(adminSession)
-      if (session && session.isAdmin === true) {
-        setIsAuthorized(true)
-      } else {
-        navigate('/admin-login', { replace: true })
-      }
-    } catch (e) {
-      navigate('/admin-login', { replace: true })
+    const session = localStorage.getItem('adminSession')
+    if (!session) {
+      navigate('/admin-login')
     }
   }, [navigate])
 
-  // Load matches
+  // Charger les données
   useEffect(() => {
-    if (!isAuthorized) return
     const storedMatches = localStorage.getItem('matches')
-    if (storedMatches) {
-      try {
-        setMatches(JSON.parse(storedMatches))
-      } catch (e) {
-        console.error('Error loading matches:', e)
-      }
-    }
-  }, [isAuthorized])
-
-  // Load news
-  useEffect(() => {
-    if (!isAuthorized) return
     const storedNews = localStorage.getItem('news')
-    if (storedNews) {
-      try {
-        setNews(JSON.parse(storedNews))
-      } catch (e) {
-        console.error('Error loading news:', e)
-      }
-    }
-  }, [isAuthorized])
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminSession')
-    navigate('/admin-login', { replace: true })
+    if (storedMatches) {
+      setMatches(JSON.parse(storedMatches).slice(0, 6))
+    }
+    if (storedNews) {
+      setNews(JSON.parse(storedNews).slice(0, 6))
+    }
+  }, [])
+
+  // Reset form
+  const resetForm = () => {
+    if (tab === 'matches') {
+      setFormData({
+        league: '',
+        team1: '',
+        team2: '',
+        team1Logo: '',
+        team2Logo: '',
+        time: '',
+        status: 'live',
+        iframeLink: '',
+        videoUrl: ''
+      })
+    } else {
+      setFormData({
+        title: '',
+        subtitle: '',
+        content: '',
+        image: '',
+        category: 'football'
+      })
+    }
+    setEditingId(null)
   }
 
-  // ===== MATCH HANDLERS =====
-  const handleAddMatch = () => {
-    if (!matchForm.team1 || !matchForm.team2) {
-      alert('Remplis les noms des équipes!')
+  // Ajouter match
+  const addMatch = () => {
+    if (!formData.team1 || !formData.team2 || !formData.league) {
+      alert('Veuillez remplir les champs requis')
       return
     }
 
     const newMatch = {
-      id: Date.now().toString(),
-      ...matchForm
+      id: editingId || Date.now(),
+      ...formData
     }
 
-    const updatedMatches = [...matches, newMatch]
-    setMatches(updatedMatches)
-    localStorage.setItem('matches', JSON.stringify(updatedMatches))
-    triggerMatchesUpdate()
-    
-    setMatchForm({
-      league: '',
-      team1: '',
-      team2: '',
-      time: '',
-      status: 'Upcoming',
-      iframeLink: '',
-      videoUrl: ''
-    })
+    let allMatches = editingId 
+      ? matches.map(m => m.id === editingId ? newMatch : m)
+      : [newMatch, ...matches].slice(0, 6)
+
+    setMatches(allMatches)
+    localStorage.setItem('matches', JSON.stringify(allMatches))
+    triggerUpdate('matches')
+    resetForm()
   }
 
-  const handleEditMatch = (match) => {
-    setEditingMatchId(match.id)
-    setMatchForm({
-      league: match.league || '',
-      team1: match.team1 || '',
-      team2: match.team2 || '',
-      team1Logo: match.team1Logo || '',
-      team2Logo: match.team2Logo || '',
-      time: match.time || '',
-      status: match.status || 'Upcoming',
-      iframeLink: match.iframeLink || '',
-      videoUrl: match.videoUrl || ''
-    })
-  }
-
-  const handleUpdateMatch = () => {
-    const updatedMatches = matches.map(m =>
-      m.id === editingMatchId
-        ? { ...m, ...matchForm }
-        : m
-    )
-    setMatches(updatedMatches)
-    localStorage.setItem('matches', JSON.stringify(updatedMatches))
-    triggerMatchesUpdate()
-    cancelEditMatch()
-  }
-
-  const cancelEditMatch = () => {
-    setEditingMatchId(null)
-    setMatchForm({
-      league: '',
-      team1: '',
-      team2: '',
-      team1Logo: '',
-      team2Logo: '',
-      time: '',
-      status: 'Upcoming',
-      iframeLink: '',
-      videoUrl: ''
-    })
-  }
-
-  const handleDeleteMatch = (id) => {
-    if (confirm('Supprimer ce match?')) {
-      const updatedMatches = matches.filter(m => m.id !== id)
-      setMatches(updatedMatches)
-      localStorage.setItem('matches', JSON.stringify(updatedMatches))
-      triggerMatchesUpdate()
-    }
-  }
-
-  // ===== NEWS HANDLERS =====
-  const handleAddNews = () => {
-    if (!newsForm.title || !newsForm.content) {
-      alert('Remplis le titre et le contenu!')
+  // Ajouter actualité
+  const addNews = () => {
+    if (!formData.title || !formData.content) {
+      alert('Veuillez remplir les champs requis')
       return
     }
 
-    const newNews = {
-      id: Date.now().toString(),
-      ...newsForm,
-      date: new Date().toISOString().split('T')[0]
+    const newItem = {
+      id: editingId || Date.now(),
+      ...formData
     }
 
-    const updatedNews = [...news, newNews]
-    setNews(updatedNews)
-    localStorage.setItem('news', JSON.stringify(updatedNews))
-    triggerNewsUpdate()
-    
-    setNewsForm({
-      title: '',
-      subtitle: '',
-      content: '',
-      image: '',
-      category: ''
-    })
+    let allNews = editingId
+      ? news.map(n => n.id === editingId ? newItem : n)
+      : [newItem, ...news].slice(0, 6)
+
+    setNews(allNews)
+    localStorage.setItem('news', JSON.stringify(allNews))
+    triggerUpdate('news')
+    resetForm()
   }
 
-  const handleEditNews = (newsItem) => {
-    setEditingNewsId(newsItem.id)
-    setNewsForm({
-      title: newsItem.title || '',
-      subtitle: newsItem.subtitle || '',
-      content: newsItem.content || '',
-      image: newsItem.image || '',
-      category: newsItem.category || ''
-    })
+  // Éditer
+  const startEdit = (item) => {
+    setEditingId(item.id)
+    setFormData(item)
   }
 
-  const handleUpdateNews = () => {
-    const updatedNews = news.map(n =>
-      n.id === editingNewsId
-        ? { ...n, ...newsForm }
-        : n
-    )
-    setNews(updatedNews)
-    localStorage.setItem('news', JSON.stringify(updatedNews))
-    triggerNewsUpdate()
-    cancelEditNews()
-  }
-
-  const cancelEditNews = () => {
-    setEditingNewsId(null)
-    setNewsForm({
-      title: '',
-      subtitle: '',
-      content: '',
-      image: '',
-      category: ''
-    })
-  }
-
-  const handleDeleteNews = (id) => {
-    if (confirm('Supprimer cet article?')) {
-      const updatedNews = news.filter(n => n.id !== id)
-      setNews(updatedNews)
-      localStorage.setItem('news', JSON.stringify(updatedNews))
-      triggerNewsUpdate()
+  // Supprimer match
+  const deleteMatch = (id) => {
+    if (confirm('Êtes-vous sûr?')) {
+      const updated = matches.filter(m => m.id !== id)
+      setMatches(updated)
+      localStorage.setItem('matches', JSON.stringify(updated))
+      triggerUpdate('matches')
     }
   }
 
-  if (!isAuthorized) {
-    return (
-      <div className={styles.adminNew}>
-        <div className={styles.authorizationCheck}>
-          <h2>🔐 Vérification...</h2>
-          <p>Attends un moment...</p>
-        </div>
-      </div>
-    )
+  // Supprimer actualité
+  const deleteNews = (id) => {
+    if (confirm('Êtes-vous sûr?')) {
+      const updated = news.filter(n => n.id !== id)
+      setNews(updated)
+      localStorage.setItem('news', JSON.stringify(updated))
+      triggerUpdate('news')
+    }
+  }
+
+  // Logout
+  const logout = () => {
+    localStorage.removeItem('adminSession')
+    navigate('/admin-login')
   }
 
   return (
-    <div className={styles.adminNew}>
-      {/* HEADER */}
+    <div className={styles.adminContainer}>
+      {/* Header */}
       <div className={styles.adminHeader}>
-        <h1>⚙️ Admin Dashboard</h1>
-        <button onClick={handleLogout} className={styles.logoutBtn}>
-          🚪 Logout
+        <h1>Dashboard Admin</h1>
+        <button onClick={logout} className={styles.logoutBtn}>Déconnexion</button>
+      </div>
+
+      {/* Tabs */}
+      <div className={styles.tabs}>
+        <button 
+          className={`${styles.tab} ${tab === 'matches' ? styles.active : ''}`}
+          onClick={() => {
+            setTab('matches')
+            resetForm()
+          }}
+        >
+          Matches
+        </button>
+        <button 
+          className={`${styles.tab} ${tab === 'news' ? styles.active : ''}`}
+          onClick={() => {
+            setTab('news')
+            resetForm()
+          }}
+        >
+          Actualités
         </button>
       </div>
 
-      {/* TABS */}
-      <div className={styles.tabsContainer}>
-        <button
-          className={`${styles.tabBtn} ${activeTab === 'matches' ? styles.active : ''}`}
-          onClick={() => setActiveTab('matches')}
-        >
-          ⚽ Matches
-        </button>
-        <button
-          className={`${styles.tabBtn} ${activeTab === 'news' ? styles.active : ''}`}
-          onClick={() => setActiveTab('news')}
-        >
-          📰 Actualités
-        </button>
+      {/* Formulaire */}
+      <div className={styles.formSection}>
+        <h2>{editingId ? 'Modifier' : 'Ajouter'} {tab === 'matches' ? 'Match' : 'Actualité'}</h2>
+
+        {tab === 'matches' ? (
+          <div className={styles.form}>
+            <input
+              type="text"
+              placeholder="Ligue"
+              value={formData.league || ''}
+              onChange={(e) => setFormData({...formData, league: e.target.value})}
+            />
+            <input
+              type="text"
+              placeholder="Équipe 1"
+              value={formData.team1 || ''}
+              onChange={(e) => setFormData({...formData, team1: e.target.value})}
+            />
+            <input
+              type="text"
+              placeholder="URL Logo Équipe 1"
+              value={formData.team1Logo || ''}
+              onChange={(e) => setFormData({...formData, team1Logo: e.target.value})}
+            />
+            <input
+              type="text"
+              placeholder="Équipe 2"
+              value={formData.team2 || ''}
+              onChange={(e) => setFormData({...formData, team2: e.target.value})}
+            />
+            <input
+              type="text"
+              placeholder="URL Logo Équipe 2"
+              value={formData.team2Logo || ''}
+              onChange={(e) => setFormData({...formData, team2Logo: e.target.value})}
+            />
+            <input
+              type="time"
+              value={formData.time || ''}
+              onChange={(e) => setFormData({...formData, time: e.target.value})}
+            />
+            <select
+              value={formData.status || 'live'}
+              onChange={(e) => setFormData({...formData, status: e.target.value})}
+            >
+              <option value="live">Live</option>
+              <option value="finished">Terminé</option>
+              <option value="upcoming">À venir</option>
+            </select>
+            <input
+              type="url"
+              placeholder="Lien iframe"
+              value={formData.iframeLink || ''}
+              onChange={(e) => setFormData({...formData, iframeLink: e.target.value})}
+            />
+            <input
+              type="url"
+              placeholder="URL vidéo YouTube"
+              value={formData.videoUrl || ''}
+              onChange={(e) => setFormData({...formData, videoUrl: e.target.value})}
+            />
+            <div className={styles.formButtons}>
+              <button onClick={addMatch} className={styles.saveBtn}>
+                {editingId ? 'Modifier' : 'Ajouter'}
+              </button>
+              {editingId && <button onClick={resetForm} className={styles.cancelBtn}>Annuler</button>}
+            </div>
+          </div>
+        ) : (
+          <div className={styles.form}>
+            <input
+              type="text"
+              placeholder="Titre"
+              value={formData.title || ''}
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+            />
+            <input
+              type="text"
+              placeholder="Sous-titre"
+              value={formData.subtitle || ''}
+              onChange={(e) => setFormData({...formData, subtitle: e.target.value})}
+            />
+            <input
+              type="url"
+              placeholder="URL Image"
+              value={formData.image || ''}
+              onChange={(e) => setFormData({...formData, image: e.target.value})}
+            />
+            <textarea
+              placeholder="Contenu"
+              value={formData.content || ''}
+              onChange={(e) => setFormData({...formData, content: e.target.value})}
+              rows="4"
+            ></textarea>
+            <select
+              value={formData.category || 'football'}
+              onChange={(e) => setFormData({...formData, category: e.target.value})}
+            >
+              <option value="football">Football</option>
+              <option value="news">Actualités</option>
+              <option value="transfer">Transferts</option>
+            </select>
+            <div className={styles.formButtons}>
+              <button onClick={addNews} className={styles.saveBtn}>
+                {editingId ? 'Modifier' : 'Ajouter'}
+              </button>
+              {editingId && <button onClick={resetForm} className={styles.cancelBtn}>Annuler</button>}
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* MATCHES TAB */}
-      {activeTab === 'matches' && (
-        <>
-          {/* FORM SECTION */}
-          <div className={styles.formSection}>
-            <h2>{editingMatchId ? '✏️ Modifier Match' : '➕ Ajouter Match'}</h2>
-            
-            <div className={styles.formGrid}>
-              <input
-                type="text"
-                placeholder="Ligue (ex: Premier League)"
-                value={matchForm.league}
-                onChange={(e) => setMatchForm({...matchForm, league: e.target.value})}
-              />
-              <input
-                type="text"
-                placeholder="Équipe 1"
-                value={matchForm.team1}
-                onChange={(e) => setMatchForm({...matchForm, team1: e.target.value})}
-              />
-              <input
-                type="text"
-                placeholder="Équipe 2"
-                value={matchForm.team2}
-                onChange={(e) => setMatchForm({...matchForm, team2: e.target.value})}
-              />
-              <input
-                type="url"
-                placeholder="Logo Équipe 1"
-                value={matchForm.team1Logo}
-                onChange={(e) => setMatchForm({...matchForm, team1Logo: e.target.value})}
-              />
-              <input
-                type="url"
-                placeholder="Logo Équipe 2"
-                value={matchForm.team2Logo}
-                onChange={(e) => setMatchForm({...matchForm, team2Logo: e.target.value})}
-              />
-              <select
-                value={matchForm.status}
-                onChange={(e) => setMatchForm({...matchForm, status: e.target.value})}
-              >
-                <option value="Upcoming">Upcoming</option>
-                <option value="Live">Live</option>
-                <option value="Finished">Finished</option>
-              </select>
-              <input
-                type="url"
-                placeholder="Lien Iframe (embed)"
-                value={matchForm.iframeLink}
-                onChange={(e) => setMatchForm({...matchForm, iframeLink: e.target.value})}
-              />
-              <input
-                type="url"
-                placeholder="URL YouTube"
-                value={matchForm.videoUrl}
-                onChange={(e) => setMatchForm({...matchForm, videoUrl: e.target.value})}
-              />
-            </div>
+      {/* Affichage des données (comme Home) */}
+      <div className={styles.dataSection}>
+        <h2>{tab === 'matches' ? 'Matches' : 'Actualités'}</h2>
 
-            <div className={styles.formButtons}>
-              {editingMatchId ? (
-                <>
-                  <button onClick={handleUpdateMatch} className={styles.saveBtn}>
-                    ✅ Mettre à jour
-                  </button>
-                  <button onClick={cancelEditMatch} className={styles.cancelBtn}>
-                    ❌ Annuler
-                  </button>
-                </>
-              ) : (
-                <button onClick={handleAddMatch} className={styles.addBtn}>
-                  ➕ Ajouter Match
-                </button>
-              )}
-            </div>
-          </div>
+        {tab === 'matches' ? (
+          <div className={styles.matchesGrid}>
+            {matches.map((match) => (
+              <div key={match.id} className={styles.matchCardWrapper}>
+                <div className={styles.matchCard}>
+                  <div className={styles.matchHeader}>
+                    <span className={styles.league}>{match.league}</span>
+                    <span className={`${styles.status} ${styles[match.status]}`}>
+                      {match.status === 'live' ? '🔴 Live' : match.status === 'finished' ? '✓ Terminé' : '⏱️ À venir'}
+                    </span>
+                  </div>
 
-          {/* MATCHES CARDS */}
-          <div className={styles.cardsSection}>
-            <h2>Mes Matches ({matches.length}/6)</h2>
-            
-            {matches.length === 0 ? (
-              <div className={styles.emptyState}>
-                <p>📭 Aucun match pour le moment</p>
-                <p>Ajoute un match pour commencer!</p>
-              </div>
-            ) : (
-              <div className={styles.cardsGrid}>
-                {matches.slice(0, 6).map(match => (
-                  <div key={match.id} className={`${styles.card} ${styles.matchCard}`}>
-                    <div className={styles.matchCardHeader}>
-                      <div className={styles.matchTeams}>
-                        <div className={styles.teamSection}>
-                          <div className={styles.teamLogo}>
-                            {match.team1Logo ? (
-                              <img src={match.team1Logo} alt={match.team1} />
-                            ) : (
-                              <div className={styles.logoFallback}>
-                                {match.team1.charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                          </div>
-                          <span className={styles.teamName}>{match.team1}</span>
-                        </div>
-                        
-                        <div className={styles.vs}>VS</div>
-                        
-                        <div className={styles.teamSection}>
-                          <div className={styles.teamLogo}>
-                            {match.team2Logo ? (
-                              <img src={match.team2Logo} alt={match.team2} />
-                            ) : (
-                              <div className={styles.logoFallback}>
-                                {match.team2.charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                          </div>
-                          <span className={styles.teamName}>{match.team2}</span>
-                        </div>
-                      </div>
+                  <div className={styles.matchBody}>
+                    <div className={styles.team}>
+                      {match.team1Logo && <img src={match.team1Logo} alt={match.team1} />}
+                      <span>{match.team1}</span>
                     </div>
-                    
-                    <div className={styles.matchCardBody}>
-                      <div className={styles.matchMeta}>
-                        <span className={styles.league}>🏆 {match.league}</span>
-                        <span className={styles.status}>{match.status}</span>
-                        {match.time && <span className={styles.time}>⏰ {match.time}</span>}
-                      </div>
-                      <div className={styles.streamInfo}>
-                        {match.iframeLink && <p>📺 Iframe Stream</p>}
-                        {match.videoUrl && <p>🎥 YouTube</p>}
-                      </div>
+                    <div className={styles.vs}>
+                      <div>{match.time}</div>
                     </div>
-
-                    <div className={styles.matchCardFooter}>
-                      <button
-                        onClick={() => handleEditMatch(match)}
-                        className={styles.editBtn}
-                      >
-                        ✏️ Éditer
-                      </button>
-                      <button
-                        onClick={() => handleDeleteMatch(match.id)}
-                        className={styles.deleteBtn}
-                      >
-                        🗑️ Supprimer
-                      </button>
+                    <div className={styles.team}>
+                      <span>{match.team2}</span>
+                      {match.team2Logo && <img src={match.team2Logo} alt={match.team2} />}
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </>
-      )}
 
-      {/* NEWS TAB */}
-      {activeTab === 'news' && (
-        <>
-          {/* FORM SECTION */}
-          <div className={styles.formSection}>
-            <h2>{editingNewsId ? '✏️ Modifier Article' : '➕ Ajouter Article'}</h2>
-            
-            <div className={styles.formGrid}>
-              <input
-                type="text"
-                placeholder="Titre"
-                value={newsForm.title}
-                onChange={(e) => setNewsForm({...newsForm, title: e.target.value})}
-              />
-              <input
-                type="text"
-                placeholder="Sous-titre"
-                value={newsForm.subtitle}
-                onChange={(e) => setNewsForm({...newsForm, subtitle: e.target.value})}
-              />
-              <input
-                type="text"
-                placeholder="Catégorie (ex: Breaking News)"
-                value={newsForm.category}
-                onChange={(e) => setNewsForm({...newsForm, category: e.target.value})}
-              />
-              <input
-                type="url"
-                placeholder="URL Image"
-                value={newsForm.image}
-                onChange={(e) => setNewsForm({...newsForm, image: e.target.value})}
-              />
-              <textarea
-                className={styles.formTextarea}
-                placeholder="Contenu complet de l'article..."
-                value={newsForm.content}
-                onChange={(e) => setNewsForm({...newsForm, content: e.target.value})}
-              />
-            </div>
-
-            <div className={styles.formButtons}>
-              {editingNewsId ? (
-                <>
-                  <button onClick={handleUpdateNews} className={styles.saveBtn}>
-                    ✅ Mettre à jour
-                  </button>
-                  <button onClick={cancelEditNews} className={styles.cancelBtn}>
-                    ❌ Annuler
-                  </button>
-                </>
-              ) : (
-                <button onClick={handleAddNews} className={styles.addBtn}>
-                  ➕ Ajouter Article
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* NEWS CARDS */}
-          <div className={styles.cardsSection}>
-            <h2>Mes Articles ({news.length}/6)</h2>
-            
-            {news.length === 0 ? (
-              <div className={styles.emptyState}>
-                <p>📭 Aucun article pour le moment</p>
-                <p>Ajoute une actualité pour commencer!</p>
-              </div>
-            ) : (
-              <div className={styles.cardsGrid}>
-                {news.slice(0, 6).map(article => (
-                  <div key={article.id} className={`${styles.card} ${styles.newsCard}`}>
-                    {article.image && (
-                      <div className={styles.newsCardImage}>
-                        <img src={article.image} alt={article.title} />
-                      </div>
-                    )}
-                    
-                    <div className={styles.newsCardContent}>
-                      {article.category && (
-                        <span className={styles.newsCardCategory}>
-                          {article.category}
-                        </span>
-                      )}
-                      <h3 className={styles.newsCardTitle}>
-                        {article.title}
-                      </h3>
-                      {article.subtitle && (
-                        <p style={{fontSize: '0.9rem', color: 'var(--text-muted)'}}>
-                          {article.subtitle}
-                        </p>
-                      )}
-                      <p className={styles.newsCardPreview}>
-                        {article.content.substring(0, 80)}...
-                      </p>
-                    </div>
-
-                    <div className={styles.newsCardFooter}>
-                      <button
-                        onClick={() => handleEditNews(article)}
-                        className={styles.editBtn}
-                      >
-                        ✏️ Éditer
-                      </button>
-                      <button
-                        onClick={() => handleDeleteNews(article.id)}
-                        className={styles.deleteBtn}
-                      >
-                        🗑️ Supprimer
-                      </button>
-                    </div>
+                  <div className={styles.matchFooter}>
+                    {match.iframeLink && <span>🎥 Lien iframe</span>}
+                    {match.videoUrl && <span>▶️ YouTube</span>}
                   </div>
-                ))}
+                </div>
+
+                {/* Actions overlay */}
+                <div className={styles.cardActions}>
+                  <button 
+                    onClick={() => startEdit(match)}
+                    className={styles.editBtn}
+                  >
+                    ✏️ Éditer
+                  </button>
+                  <button 
+                    onClick={() => deleteMatch(match.id)}
+                    className={styles.deleteBtn}
+                  >
+                    🗑️ Supprimer
+                  </button>
+                </div>
               </div>
-            )}
+            ))}
           </div>
-        </>
-      )}
+        ) : (
+          <div className={styles.newsGrid}>
+            {news.map((item) => (
+              <div key={item.id} className={styles.newsCardWrapper}>
+                <div className={styles.newsCard}>
+                  {item.image && (
+                    <div className={styles.newsImage}>
+                      <img src={item.image} alt={item.title} />
+                    </div>
+                  )}
+                  <div className={styles.newsContent}>
+                    <h3>{item.title}</h3>
+                    {item.subtitle && <p className={styles.subtitle}>{item.subtitle}</p>}
+                    <p className={styles.excerpt}>{item.content?.substring(0, 100)}...</p>
+                    <span className={styles.category}>{item.category}</span>
+                  </div>
+                </div>
+
+                {/* Actions overlay */}
+                <div className={styles.cardActions}>
+                  <button 
+                    onClick={() => startEdit(item)}
+                    className={styles.editBtn}
+                  >
+                    ✏️ Éditer
+                  </button>
+                  <button 
+                    onClick={() => deleteNews(item.id)}
+                    className={styles.deleteBtn}
+                  >
+                    🗑️ Supprimer
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
-
-export default AdminNew
