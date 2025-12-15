@@ -7,10 +7,26 @@ function MatchDetails() {
   const { id } = useParams()
   const [videoError, setVideoError] = useState(false)
   
-  // Get matches from localStorage or use default data
-  const stored = localStorage.getItem('footballMatches')
-  const matches = stored ? JSON.parse(stored) : matchesData
-  const match = matches.find((m) => m.id == id || m.id === parseInt(id))
+  // Get matches from localStorage (new admin system) or use fallback
+  let match = null
+  
+  // Try to get from new admin storage
+  const storedMatches = localStorage.getItem('matches')
+  if (storedMatches) {
+    try {
+      const matches = JSON.parse(storedMatches)
+      match = matches.find((m) => m.id === id)
+    } catch (e) {
+      console.error('Error parsing matches:', e)
+    }
+  }
+  
+  // Fallback to old storage system if needed
+  if (!match) {
+    const footballMatches = localStorage.getItem('footballMatches')
+    const matches = footballMatches ? JSON.parse(footballMatches) : matchesData
+    match = matches.find((m) => m.id == id || m.id === parseInt(id))
+  }
 
   if (!match) {
     return (
@@ -23,11 +39,6 @@ function MatchDetails() {
       </div>
     )
   }
-
-  // Debug: Log video data
-  console.log('Match ID from URL:', id, 'Type:', typeof id)
-  console.log('Looking for match in array...')
-  console.log('Available matches:', matches.map(m => ({ id: m.id, team1: m.team1, team2: m.team2 })))
 
   // Convert YouTube URL to embed URL if needed
   const convertYouTubeToEmbed = (url) => {
