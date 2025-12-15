@@ -8,8 +8,8 @@ function AdminLogin() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // Fallback password for development
-  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Ahmed@2002@'
+  // Password verification - hardcoded as fallback for development
+  const ADMIN_PASSWORD = 'Ahmed@2002@'
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -31,8 +31,10 @@ function AdminLogin() {
           timestamp: Date.now(),
           loginTime: new Date().toISOString()
         }))
-        // Use replace to prevent back button issues
-        navigate('/admin', { replace: true })
+        // Small delay to ensure state updates
+        setTimeout(() => {
+          navigate('/admin', { replace: true })
+        }, 300)
       } else {
         // Fallback: client-side verification (development/localhost)
         if (password === ADMIN_PASSWORD) {
@@ -41,7 +43,10 @@ function AdminLogin() {
             timestamp: Date.now(),
             loginTime: new Date().toISOString()
           }))
-          navigate('/admin', { replace: true })
+          // Small delay to ensure state updates
+          setTimeout(() => {
+            navigate('/admin', { replace: true })
+          }, 300)
         } else {
           setError('Invalid password. Please try again.')
           setPassword('')
@@ -56,7 +61,10 @@ function AdminLogin() {
           timestamp: Date.now(),
           loginTime: new Date().toISOString()
         }))
-        navigate('/admin', { replace: true })
+        // Small delay to ensure state updates
+        setTimeout(() => {
+          navigate('/admin', { replace: true })
+        }, 300)
       } else {
         setError('Invalid password. Please try again.')
         setPassword('')

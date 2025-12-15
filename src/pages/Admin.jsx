@@ -56,23 +56,18 @@ function Admin() {
   useEffect(() => {
     const adminSession = localStorage.getItem('adminSession')
     if (!adminSession) {
-      console.log('No admin session found, redirecting to login')
       navigate('/admin-login', { replace: true })
       return
     }
     
     try {
       const session = JSON.parse(adminSession)
-      console.log('Session parsed:', session)
-      if (session && session.isAdmin) {
-        console.log('Authorization successful')
+      if (session && session.isAdmin === true) {
         setIsAuthorized(true)
       } else {
-        console.log('Session not admin, redirecting')
         navigate('/admin-login', { replace: true })
       }
     } catch (e) {
-      console.error('Session error:', e)
       navigate('/admin-login', { replace: true })
     }
   }, [navigate])
