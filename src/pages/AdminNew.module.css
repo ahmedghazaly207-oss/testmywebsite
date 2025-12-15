@@ -321,10 +321,19 @@
 .streamInfo p {
   margin: 0.2rem 0;
 }
+
+.matchCardFooter {
   padding: 1.5rem;
   border-top: 1px solid var(--border-color);
   display: flex;
   gap: 0.8rem;
+}
+
+.newsCardFooter {
+  display: flex;
+  gap: 0.8rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
 }
 
 .editBtn {
@@ -411,13 +420,6 @@
   line-height: 1.5;
   margin: 0.5rem 0;
   flex: 1;
-}
-
-.newsCardFooter {
-  display: flex;
-  gap: 0.8rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
 }
 
 /* EMPTY STATE */
